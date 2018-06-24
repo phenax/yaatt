@@ -1,26 +1,20 @@
 
-const { Schema } = require('../../index.js');
-
-const schema = Schema({
-    name: Schema.string,
-});
-
 module.exports = {
     label: 'Httpbin Get call',
     url: 'http://httpbin.org/get',
     method: 'get',
     tests: {
-        'should have name set to Hello world': {
+        'should have name set to Fuckerooni': {
             params: {
-                nice: 'pants',
+                name: 'Fuckerooni',
             },
             onResponse: response =>
                 response
-                    .matchProp([ 'args', 'nice' ], 'pants')
+                    .matchProp([ 'args', 'name' ], 'Fuckerooni')
         },
         'should have custom header set to Yep': {
             headers: {
-                'X-Hello-World': 'Yepey',
+                'X-Hello-World': 'Yep',
             },
             onResponse: response =>
                 response
@@ -32,3 +26,5 @@ module.exports = {
         },
     },
 };
+
+
