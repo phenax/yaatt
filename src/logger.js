@@ -39,8 +39,22 @@ const logError = e => {
     return e;
 };
 
+const log = label => data => {
+    console.log(
+        chalk.blue.bold(
+            '>> ',
+            new Date(),
+            label,
+            ':',
+        ),
+        data
+    );
+    return data;
+}
+
 module.exports = {
     logTestCase,
     logTestSuite,
     logError,
+    log,
 };

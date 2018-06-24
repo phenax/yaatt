@@ -1,5 +1,7 @@
 
 const { curry } = require('ramda');
+const axios = require('axios');
+const Future = require('fluture');
 
 const throwError = (e = 'Unknown Error') => {
     if(typeof e === 'string' || typeof e === 'number')
@@ -23,17 +25,21 @@ const toTestCases = ({ url, method, tests }) =>
             test: tests[label],
         }));
 
-const mapAsync = curry((fn, list) =>
-    list.reduce(
-        (pChain, item, index) =>
-            pChain.then(data => fn(item, index, data)),
-        Promise.resolve(null)
-    ));
+const mapFutureSync = curry(
+    (fn, list) =>
+        list.reduce(
+            (fChain, item, index) =>
+                fChain.chain(data => fn(item, index, data)),
+            Future.of(null)
+        )
+);
 
+const request = Future.encaseP(axios);
 
 module.exports = {
     throwError,
     toParams,
     toTestCases,
-    mapAsync,
+    mapFutureSync,
+    request,
 };

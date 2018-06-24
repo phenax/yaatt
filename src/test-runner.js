@@ -1,15 +1,14 @@
 
-const axios = require('axios');
 const { pick, compose } = require('ramda');
 
-const { toParams, toTestCases, mapAsync } = require('./utils');
+const { toParams, toTestCases, mapFutureSync, request } = require('./utils');
 const Response = require('./Response');
-const { logTestSuite, logTestCase, logError } = require('./logger');
+const { logTestSuite, logTestCase, logError, log } = require('./logger');
 
 const runTestCase = (testCase) => {
     const { test } = testCase;
 
-    const request = pick([
+    const options = pick([
         'method',
         'url',
         'headers',
@@ -17,26 +16,24 @@ const runTestCase = (testCase) => {
         'data',
     ], { ...testCase, ...test });
 
-    request.params = toParams(request.params);
-    request.data = toParams(request.data);
+    options.params = toParams(options.params);
+    options.data = toParams(options.data);
 
-    return axios(request)
-        .then(Response)
-        .then(test.onResponse)
-        .then(resp => {
+    return request(options)
+        .map(Response)
+        .map(test.onResponse)
+        .map(resp => {
             logTestCase(testCase, true);
             return resp;
         })
-        .catch(e => {
+        .mapRej(e => {
             logTestCase(testCase, false);
-            throw e;
+            return e;
         });
 };
 
-
 const runTestSuite = compose(
-    p => p.catch(logError),
-    mapAsync(runTestCase),
+    mapFutureSync(runTestCase),
     toTestCases,
     logTestSuite,
 );

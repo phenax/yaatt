@@ -1,25 +1,33 @@
 #!/usr/bin/env node
 
+const path = require('path');
+const glob = require('glob');
 const { flatten, map, compose } = require('ramda');
 const yargs = require('yargs');
 const axios = require('axios');
-const path = require('path');
-const glob = require('glob');
 
 const { runTestSuite } = require('../src/test-runner');
-const { mapAsync } = require('../src/utils');
+const { mapFutureSync } = require('../src/utils');
 
-if(!yargs.argv._[0]) {
-    throw new Error('Need to specify path to test suite');
-}
+const validateArgs = suitePaths => {
+    if(!suitePaths.length) {
+        throw new Error('Need to specify path to test suite');
+    }
+
+    return suitePaths;
+};
 
 const initTests = compose(
-    p => p.then(() => console.log()),
-    mapAsync(runTestSuite),
+    mapFutureSync(runTestSuite),
     map(require),
     map(path.resolve),
     flatten,
     map(glob.sync),
+    validateArgs,
 );
 
-initTests(yargs.argv._ || []);
+initTests(yargs.argv._ || [])
+    .fork(
+        console.log,
+        () => console.log(''),
+    );

@@ -14,7 +14,7 @@ module.exports = {
         },
         'should have custom header set to Yep': {
             headers: {
-                'X-Hello-World': 'Yep',
+                'X-Hello-World': 'Yepey',
             },
             onResponse: response =>
                 response
