@@ -1,6 +1,6 @@
 
 const axios = require('axios');
-const { pick } = require('ramda');
+const { pick, compose } = require('ramda');
 
 const { toParams, toTestCases, mapAsync } = require('./utils');
 const Response = require('./Response');
@@ -33,13 +33,14 @@ const runTestCase = (testCase) => {
         });
 };
 
-const runTestSuite = (testSuite) => {
 
-    logTestSuite(testSuite);
+const runTestSuite = compose(
+    p => p.catch(logError),
+    mapAsync(runTestCase),
+    toTestCases,
+    logTestSuite,
+);
 
-    return mapAsync(runTestCase)(toTestCases(testSuite))
-        .catch(logError);
-};
 
 module.exports = {
     runTestCase,

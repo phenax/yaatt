@@ -30,6 +30,7 @@ const mapAsync = curry((fn, list) =>
         Promise.resolve(null)
     ));
 
+
 module.exports = {
     throwError,
     toParams,

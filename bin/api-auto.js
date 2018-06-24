@@ -14,6 +14,7 @@ if(!yargs.argv._[0]) {
 }
 
 const initTests = compose(
+    p => p.then(() => console.log()),
     mapAsync(runTestSuite),
     map(require),
     map(path.resolve),
