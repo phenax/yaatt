@@ -4,12 +4,10 @@ const { pick } = require('ramda');
 
 const { toParams, toTestCases, mapAsync } = require('./utils');
 const Response = require('./Response');
-const { logTestSuite, logTestCase } = require('./logger');
+const { logTestSuite, logTestCase, logError } = require('./logger');
 
 const runTestCase = (testCase) => {
     const { test } = testCase;
-
-    logTestCase(testCase);
 
     const request = pick([
         'method',
@@ -24,7 +22,15 @@ const runTestCase = (testCase) => {
 
     return axios(request)
         .then(Response)
-        .then(test.onResponse);
+        .then(test.onResponse)
+        .then(resp => {
+            logTestCase(testCase, true);
+            return resp;
+        })
+        .catch(e => {
+            logTestCase(testCase, false);
+            throw e;
+        });
 };
 
 const runTestSuite = (testSuite) => {
@@ -32,7 +38,7 @@ const runTestSuite = (testSuite) => {
     logTestSuite(testSuite);
 
     mapAsync(runTestCase, toTestCases(testSuite))
-        .catch(e => console.error(new Error(e))); // TODO: Use chalk
+        .catch(logError);
 
     return testSuite;
 };

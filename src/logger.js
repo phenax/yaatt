@@ -17,15 +17,32 @@ const logTestSuite = (testSuite) => {
     return testSuite;
 }
 
-const logTestCase = (testCase) => {
+const logTestCase = (testCase, passed = false) => {
     const { label } = testCase;
 
-    console.log(chalk.green('   -', label));
+    if(passed) {
+        console.log(chalk.green('   -', label));
+    } else {
+        console.log(chalk.red('   x', label));
+    }
 
     return testCase;
+};
+
+const logError = e => {
+    const { message, stacktrace } = e;
+
+    console.log();
+    console.log(chalk.red.bold('Test failed with the following error(s)'));
+    console.log();
+    console.log(chalk.bgRed.bold(message));
+    console.log(chalk.red(stacktrace));
+
+    return e;
 };
 
 module.exports = {
     logTestCase,
     logTestSuite,
+    logError,
 };
