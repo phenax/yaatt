@@ -11,18 +11,24 @@ module.exports = {
     method: 'get',
     tests: {
         'should have name set to Hello world': {
-            query: 'nice=pants',
-            onResponse: response => response
-                .matchProp('name', 'Hello world'),
+            params: {
+                nice: 'pants',
+            },
+            onResponse: response =>
+                response
+                    .matchProp([ 'args', 'nice' ], 'pants')
         },
         'should match given schema': {
-            query: 'hello=world&value=new',
-            onResponse: response => response
-                .assert(({ data }, { throwError }) => {
-                    // if(data.headers)
-                    console.log(data);
-                })
-                ,
+            headers: {
+                'X-Hello-World': 'Yep',
+            },
+            onResponse: response =>
+                response
+                    .assert(({ data }, { throwError }) => {
+                        if(data.headers['X-Hello-World'] !== 'Yep') {
+                            throwError('No match header. Me no likey');
+                        }
+                    })
         },
     },
 };

@@ -1,5 +1,5 @@
 
-const { pick, path: propPath } = require('ramda');
+const { pick, path: propPath, join } = require('ramda');
 const { throwError } = require('./utils');
 
 const Response = (_response) => {
@@ -11,10 +11,12 @@ const Response = (_response) => {
     ], _response);
 
     const self = {
-        matchProp: (key, value) =>
-            (propPath(key, response.data) === value)
+        matchProp(key, value) {
+            const fieldValue = propPath(key, response.data);
+            return fieldValue === value
                 ? self
-                : throwError(`Prop ${key} was ${response.data[key]}, expected ${value}`),
+                : throwError(`Property "${key}" of the response was "${fieldValue}", expected "${value}"`);
+        },
         assert(fn) {
             fn(response, { throwError });
             return self;

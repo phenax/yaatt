@@ -1,29 +1,33 @@
 
 const axios = require('axios');
+const { pick } = require('ramda');
 
 const { toParams, toTestCases, mapAsync } = require('./utils');
 const Response = require('./Response');
 const { logTestSuite, logTestCase } = require('./logger');
 
 const runTestCase = (testCase) => {
-    const { url, method, test, label } = testCase;
+    const { test } = testCase;
 
     logTestCase(testCase);
 
-    const request = {
-        method,
-        url,
-        params: toParams(testCase.query),
-        data: toParams(testCase.data || {}),
-    };
+    const request = pick([
+        'method',
+        'url',
+        'headers',
+        'params',
+        'data',
+    ], { ...testCase, ...test });
+
+    request.params = toParams(request.params);
+    request.data = toParams(request.data);
 
     return axios(request)
         .then(Response)
-        .then(resp => test.onResponse(resp));
+        .then(test.onResponse);
 };
 
 const runTestSuite = (testSuite) => {
-    const { title, url, method = 'get' } = testSuite;
 
     logTestSuite(testSuite);
 
