@@ -33,7 +33,6 @@ const runTestCase = (testCase) => {
 };
 
 const runTestSuite = compose(
-    f => f.mapRej(logError),
     mapFutureSync(runTestCase),
     toTestCases,
     logTestSuite,

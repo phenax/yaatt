@@ -33,7 +33,9 @@ const mapFutureSync = curry(
     )
 );
 
-// const mapFutureAsync = Future.all;
+const mapFutureAsync = curry(
+    (fn, list) => Future.parallel(10, list.map(fn))
+);
 
 const request = Future.encaseP(axios);
 
@@ -44,7 +46,7 @@ module.exports = {
     toParams,
     toTestCases,
     mapFutureSync,
-    // mapFutureAsync,
+    mapFutureAsync,
     request,
     tryF,
 };

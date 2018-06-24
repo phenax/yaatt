@@ -4,13 +4,13 @@ module.exports = {
     url: 'http://httpbin.org/post',
     method: 'post',
     tests: {
-        'should have name set to Fuckerooni': {
+        'should have name set to Mario': {
             data: {
-                name: 'Fuckerooni',
+                name: 'Mario',
             },
             onResponse: response =>
                 response
-                    .matchProp(['data'], '{"name":"Fuckerooni"}')
+                    .matchProp(['data'], '{"name":"Mario"}')
         },
         'should have custom header set to Nope': {
             headers: {

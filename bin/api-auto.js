@@ -8,6 +8,7 @@ const axios = require('axios');
 
 const { runTestSuite } = require('../src/test-runner');
 const { mapFutureSync } = require('../src/utils');
+const { logError } = require('../src/logger');
 
 const validateArgs = suitePaths => {
     if(!suitePaths.length) {
@@ -28,6 +29,6 @@ const initTests = compose(
 
 initTests(yargs.argv._ || [])
     .fork(
-        console.log,
+        logError,
         () => console.log(''),
     );
