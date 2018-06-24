@@ -6,7 +6,7 @@ const Future = require('fluture');
 const throwError = (e = 'Unknown Error') => {
     if(typeof e === 'string' || typeof e === 'number')
         throw new Error(e);
-    throw new e;
+    throw e;
 };
 
 const toParams = query => {

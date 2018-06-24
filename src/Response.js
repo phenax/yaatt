@@ -1,5 +1,7 @@
 
 const { pick, path: propPath, join } = require('ramda');
+const Joi = require('joi');
+
 const { throwError } = require('./utils');
 
 const Response = (_response) => {
@@ -16,6 +18,11 @@ const Response = (_response) => {
             return fieldValue === value
                 ? self
                 : throwError(`Property "${key}" of the response was "${fieldValue}", expected "${value}"`);
+        },
+        matchSchema(schema) {
+            const { error } = Joi.validate(response.data, schema);
+            error && throwError(error);
+            return self;
         },
         assert(fn) {
             fn(response, { throwError });

@@ -1,10 +1,6 @@
 
-// const { identity } = require('ramda');
-// const Fluture = require('fluture');
-
-
-const Schema = schema => schema;
+const Joi = require('joi');
 
 module.exports = {
-    Schema
+    Joi,
 }
