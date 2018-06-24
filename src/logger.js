@@ -8,10 +8,8 @@ const logTestSuite = (testSuite) => {
     console.log();
     console.log(chalk.bold(label));
     console.log(
-        chalk.blue(
-            chalk.bold(toUpper(method)),
-            url,
-        )
+        chalk.blue.bold(toUpper(method)),
+        chalk.blue(url),
     );
 
     return testSuite;
@@ -33,9 +31,9 @@ const logError = e => {
     const { message, stacktrace } = e;
 
     console.log();
-    console.log(chalk.red.bold('Test failed with the following error(s)'));
+    console.log(chalk.bgRed.bold('== Test failed with the following error(s) =='));
     console.log();
-    console.log(chalk.bgRed.bold(message));
+    console.log(chalk.red.bold(message));
     console.log(chalk.red(stacktrace));
 
     return e;

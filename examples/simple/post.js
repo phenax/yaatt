@@ -18,11 +18,7 @@ module.exports = {
             },
             onResponse: response =>
                 response
-                    .assert(({ data }, { throwError }) => {
-                        if(data.headers['X-Hello-World'] !== 'Nope') {
-                            throwError('No match header. Me no likey');
-                        }
-                    })
+                    .matchProp([ 'headers', 'X-Hello-World' ], 'Nope')
         },
     },
 };
