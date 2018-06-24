@@ -1,5 +1,5 @@
 {
-  "name": "api-auto",
+  "name": "yaatt",
   "version": "0.0.0",
   "description": "__",
   "main": "index.js",
@@ -7,7 +7,7 @@
   "author": "Akshay Nair <phenax5@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "./bin/api-auto.js"
+    "start": "./bin/yaatt.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
