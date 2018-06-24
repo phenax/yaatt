@@ -3,10 +3,12 @@ const axios = require('axios');
 
 const { toParams, toTestCases, mapAsync } = require('./utils');
 const Response = require('./Response');
+const { logTestSuite, logTestCase } = require('./logger');
 
 const runTestCase = (testCase) => {
     const { url, method, test, label } = testCase;
-    console.log('    -', label);
+
+    logTestCase(testCase);
 
     const request = {
         method,
@@ -21,14 +23,12 @@ const runTestCase = (testCase) => {
 };
 
 const runTestSuite = (testSuite) => {
-
     const { title, url, method = 'get' } = testSuite;
 
-    console.log(title);
-    console.log(method.toUpperCase(), url);
+    logTestSuite(testSuite);
 
     mapAsync(runTestCase, toTestCases(testSuite))
-        .catch(e => console.error(new Error(e)));
+        .catch(e => console.error(new Error(e))); // TODO: Use chalk
 
     return testSuite;
 };

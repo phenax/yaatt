@@ -6,7 +6,7 @@ const schema = Schema({
 });
 
 module.exports = {
-    title: 'Httpbin Get call',
+    label: 'Httpbin Get call',
     url: 'http://httpbin.org/get',
     method: 'get',
     tests: {
