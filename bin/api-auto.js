@@ -7,13 +7,14 @@ const path = require('path');
 const glob = require('glob');
 
 const { runTestSuite } = require('../src/test-runner');
+const { mapAsync } = require('../src/utils');
 
 if(!yargs.argv._[0]) {
     throw new Error('Need to specify path to test suite');
 }
 
 const initTests = compose(
-    map(runTestSuite),
+    mapAsync(runTestSuite),
     map(require),
     map(path.resolve),
     flatten,

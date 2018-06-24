@@ -37,10 +37,8 @@ const runTestSuite = (testSuite) => {
 
     logTestSuite(testSuite);
 
-    mapAsync(runTestCase, toTestCases(testSuite))
+    return mapAsync(runTestCase)(toTestCases(testSuite))
         .catch(logError);
-
-    return testSuite;
 };
 
 module.exports = {

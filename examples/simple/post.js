@@ -12,14 +12,14 @@ module.exports = {
                 response
                     .matchProp(['data'], '{"name":"Fuckerooni"}')
         },
-        'should have custom header set to Yep': {
+        'should have custom header set to Nope': {
             headers: {
-                'X-Hello-World': 'Yep',
+                'X-Hello-World': 'Nope',
             },
             onResponse: response =>
                 response
                     .assert(({ data }, { throwError }) => {
-                        if(data.headers['X-Hello-World'] !== 'Yep') {
+                        if(data.headers['X-Hello-World'] !== 'Nope') {
                             throwError('No match header. Me no likey');
                         }
                     })

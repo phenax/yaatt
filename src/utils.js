@@ -1,4 +1,5 @@
 
+const { curry } = require('ramda');
 
 const throwError = (e = 'Unknown Error') => {
     if(typeof e === 'string' || typeof e === 'number')
@@ -22,12 +23,12 @@ const toTestCases = ({ url, method, tests }) =>
             test: tests[label],
         }));
 
-const mapAsync = (fn, list) =>
+const mapAsync = curry((fn, list) =>
     list.reduce(
         (pChain, item, index) =>
             pChain.then(data => fn(item, index, data)),
         Promise.resolve(null)
-    );
+    ));
 
 module.exports = {
     throwError,
