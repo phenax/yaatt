@@ -1,7 +1,7 @@
 
 const { pick, compose } = require('ramda');
 
-const { toParams, toTestCases, mapFutureSync, request } = require('./utils');
+const { toParams, toTestCases, mapFutureSync, request, tryF } = require('./utils');
 const Response = require('./Response');
 const { logTestSuite, logTestCase, logError, log } = require('./logger');
 
@@ -21,7 +21,7 @@ const runTestCase = (testCase) => {
 
     return request(options)
         .map(Response)
-        .map(test.onResponse)
+        .chain(tryF(test.onResponse))
         .map(resp => {
             logTestCase(testCase, true);
             return resp;
@@ -33,6 +33,7 @@ const runTestCase = (testCase) => {
 };
 
 const runTestSuite = compose(
+    f => f.mapRej(logError),
     mapFutureSync(runTestCase),
     toTestCases,
     logTestSuite,
