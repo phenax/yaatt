@@ -6,6 +6,8 @@ const { flatten, map, compose } = require('ramda');
 const yargs = require('yargs');
 const axios = require('axios');
 
+require('@babel/register');
+
 const { runTestSuite } = require('../src/test-runner');
 const { mapFutureSync } = require('../src/utils');
 const { logError } = require('../src/logger');

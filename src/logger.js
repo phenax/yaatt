@@ -1,60 +1,61 @@
+/* eslint-disable no-console */
 
 const chalk = require('chalk');
-const { toUpper, compose } = require('ramda');
+const { toUpper } = require('ramda');
 
 const logTestSuite = (testSuite) => {
-    const { url, method, label } = testSuite;
+	const { url, method, label } = testSuite;
 
-    console.log();
-    console.log(chalk.bold(label));
-    console.log(
-        chalk.blue.bold(toUpper(method)),
-        chalk.blue(url),
-    );
+	console.log();
+	console.log(chalk.bold(label));
+	console.log(
+		chalk.blue.bold(toUpper(method)),
+		chalk.blue(url),
+	);
 
-    return testSuite;
-}
+	return testSuite;
+};
 
 const logTestCase = (testCase, passed = false) => {
-    const { label } = testCase;
+	const { label } = testCase;
 
-    if(passed) {
-        console.log(chalk.green('   -', label));
-    } else {
-        console.log(chalk.red('   x', label));
-    }
+	if(passed) {
+		console.log(chalk.green('   -', label));
+	} else {
+		console.log(chalk.red('   x', label));
+	}
 
-    return testCase;
+	return testCase;
 };
 
 const logError = e => {
-    const { message, stacktrace } = e;
+	const { message, stacktrace } = e;
 
-    console.log();
-    console.log(chalk.bgRed.bold('== Test failed with the following error(s) =='));
-    console.log();
-    console.log(chalk.red.bold(message));
-    console.log(chalk.red(stacktrace));
+	console.log();
+	console.log(chalk.bgRed.bold('== Test failed with the following error(s) =='));
+	console.log();
+	console.log(chalk.red.bold(message));
+	console.log(chalk.red(stacktrace));
 
-    return e;
+	return e;
 };
 
 const log = label => data => {
-    console.log(
-        chalk.blue.bold(
-            '>> ',
-            new Date(),
-            label,
-            ':',
-        ),
-        data
-    );
-    return data;
-}
+	console.log(
+		chalk.blue.bold(
+			'>> ',
+			new Date(),
+			label,
+			':',
+		),
+		data
+	);
+	return data;
+};
 
 module.exports = {
-    logTestCase,
-    logTestSuite,
-    logError,
-    log,
+	logTestCase,
+	logTestSuite,
+	logError,
+	log,
 };
