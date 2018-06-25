@@ -12,10 +12,11 @@ describe('Test running', () => {
 	beforeEach(() => {
 		konsole.isEnabled = false;
 		resetKonsole = null;
+		request.mock = data => Promise.resolve({ data });
 	});
 
 	afterEach(() => {
-		konsole.isEnabled = true;
+		// konsole.isEnabled = true;
 		resetKonsole && resetKonsole();
 		request.mock = null;
 	});
@@ -35,8 +36,6 @@ describe('Test running', () => {
 					onResponse: resp => resp.get([]),
 				},
 			};
-
-			request.mock = data => Promise.resolve({ data });
 
 			runTestCase(testCase)
 				.fork(
@@ -64,8 +63,6 @@ describe('Test running', () => {
 				},
 			};
 
-			request.mock = data => Promise.resolve({ data });
-
 			runTestCase(testCase)
 				.fork(
 					done,
@@ -89,8 +86,6 @@ describe('Test running', () => {
 					onResponse: resp => resp.get([]),
 				}),
 			};
-
-			request.mock = data => Promise.resolve({ data });
 
 			runTestCase(testCase)
 				.fork(
@@ -143,8 +138,6 @@ describe('Test running', () => {
 				},
 			};
 
-			request.mock = data => Promise.resolve({ data });
-
 			runTestSuite(testSuite)
 				.fork(
 					e => done(`Future failed :: ${e}`),
@@ -152,6 +145,38 @@ describe('Test running', () => {
 						expect(onResponse).toHaveBeenCalledTimes(3);
 						done();
 					},
+				);
+		});
+
+		it('should run all test cases inside testSuite', done => {
+
+			const testUid = '235tv3wervwegr';
+
+			const testSuite = {
+				label: 'Httpbin Get call',
+				url: '/get',
+				method: 'get',
+				dependencies: {
+					auth: {
+						url: 'http://httpbin.org/post',
+						method: 'post',
+						data: { uid: 'hello_world' },
+						onResponse: () => ({ uid: testUid }),
+					},
+				},
+				tests: {
+					'should do stuff': ({ dependencies }) => {
+						expect(dependencies.auth.uid).toBe(testUid);
+						done();
+						return { onResponse: () => {} };
+					},
+				},
+			};
+
+			runTestSuite(testSuite)
+				.fork(
+					e => done(`Future failed :: ${e}`),
+					() => {},
 				);
 		});
 	});
