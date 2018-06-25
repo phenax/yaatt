@@ -9,11 +9,14 @@
   "bin": {
     "yaatt": "./bin/yaatt.js"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "jest ./test"
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "chalk": "^2.4.1",
     "fluture": "^8.0.2",
+    "jest": "^23.1.0",
     "joi": "^13.4.0",
     "ramda": "^0.25.0",
     "yargs": "^11.0.0"

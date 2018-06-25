@@ -13,11 +13,15 @@ const Response = (_response) => {
     ], _response);
 
     const self = {
-        matchProp(key, value) {
-            const fieldValue = propPath(key, response.data);
+        matchProp(keys, value) {
+            const fieldValue = self.get(keys);
             return fieldValue === value
                 ? self
-                : throwError(`Property "${key}" of the response was "${fieldValue}", expected "${value}"`);
+                : throwError(`Property "${keys}" of the response was "${fieldValue}", expected "${value}"`);
+        },
+        get(keys) {
+            const fieldValue = propPath(keys, response.data);
+            return fieldValue;
         },
         matchSchema(schema) {
             const { error } = Joi.validate(response.data, schema);
