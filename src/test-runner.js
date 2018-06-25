@@ -16,11 +16,13 @@ export const Request: (Object => RequestOptions) = compose(
 );
 
 export const runTestCase = (testCase: Test): Future => {
-	let { test } = testCase;
+	let { test, label } = testCase;
 
 	if(typeof test === 'function') {
 		test = test({});
 	}
+
+	test.label = label;
 
 	const options: RequestOptions = Request({ ...testCase, ...test });
 
@@ -28,11 +30,11 @@ export const runTestCase = (testCase: Test): Future => {
 		.map(Response)
 		.chain(tryF(test.onResponse))
 		.map(resp => {
-			logTestCase(testCase.test, true);
+			logTestCase(test, true);
 			return resp;
 		})
 		.mapRej(e => {
-			logTestCase(testCase.test, false);
+			logTestCase(test, false);
 			return e;
 		});
 };
