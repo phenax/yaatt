@@ -1,6 +1,10 @@
 //@flow
 
-export type QueryParams = string|Object;
+import type { AxiosRequestConfig } from 'axios';
+
+export type QueryParams = string | Object;
+
+export type TestError = string | Error;
 
 export type ServerResponse = {
 	data: any,
@@ -16,9 +20,19 @@ export type TestSuite = {
 	url: UrlString,
 	method: string,
 	label: string,
+	tests: { [key: string]: TestCase },
 };
 
 export type TestCase = {
 	label: string,
 	onResponse: (Response) => Response
 };
+
+export type Test = {
+	url: UrlString,
+	method: string,
+	label: string,
+	test: TestCase,
+};
+
+export type RequestOptions = AxiosRequestConfig;

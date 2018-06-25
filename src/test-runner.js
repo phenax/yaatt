@@ -1,9 +1,12 @@
+// @flowa
 
-const { pick, compose } = require('ramda');
+import { pick, compose } from 'ramda';
 
-const { toParams, toTestCases, mapFutureSync, request, tryF } = require('./utils');
-const Response = require('./Response');
-const { logTestSuite, logTestCase } = require('./logger');
+import { toParams, toTestCases, mapFutureSync, request, tryF } from './utils';
+import Response from './Response';
+import { logTestSuite, logTestCase } from './logger';
+
+// import type { TestCase } from './types';
 
 const runTestCase = (testCase) => {
 	const { test } = testCase;
