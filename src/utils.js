@@ -1,4 +1,5 @@
 
+const { parse } = require('querystring');
 const { curry } = require('ramda');
 const axios = require('axios');
 const Future = require('fluture');
@@ -10,9 +11,12 @@ const throwError = (e = 'Unknown Error') => {
 };
 
 const toParams = query => {
+    if(!query) return undefined;
+
     if(typeof query === 'string') {
-        return { def: 'wow' }; // TODO: Parse string
+        return parse(query); // TODO: Parse string
     }
+
     return query;
 };
 
