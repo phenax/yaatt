@@ -1,9 +1,12 @@
 /* eslint-disable no-console */
+// @flow
 
 const chalk = require('chalk');
 const { toUpper } = require('ramda');
 
-const logTestSuite = (testSuite) => {
+const { TestSuite, TestCase } = require('./types');
+
+const logTestSuite = (testSuite: TestSuite) => {
 	const { url, method, label } = testSuite;
 
 	console.log();
@@ -16,7 +19,7 @@ const logTestSuite = (testSuite) => {
 	return testSuite;
 };
 
-const logTestCase = (testCase, passed = false) => {
+const logTestCase = (testCase: TestCase, passed: bool = false) => {
 	const { label } = testCase;
 
 	if(passed) {
@@ -28,23 +31,23 @@ const logTestCase = (testCase, passed = false) => {
 	return testCase;
 };
 
-const logError = e => {
-	const { message, stacktrace } = e;
+const logError = (e: Error) => {
+	const { message, stack } = e;
 
 	console.log();
 	console.log(chalk.bgRed.bold('== Test failed with the following error(s) =='));
 	console.log();
 	console.log(chalk.red.bold(message));
-	console.log(chalk.red(stacktrace));
+	console.log(chalk.red(stack));
 
 	return e;
 };
 
-const log = label => data => {
+const log = (label: string) => (data: any): any => {
 	console.log(
 		chalk.blue.bold(
 			'>> ',
-			new Date(),
+			(new Date()).toString(),
 			label,
 			':',
 		),
@@ -53,9 +56,12 @@ const log = label => data => {
 	return data;
 };
 
+const logNewLine = () => console.log('');
+
 module.exports = {
 	logTestCase,
 	logTestSuite,
 	logError,
+	logNewLine,
 	log,
 };
