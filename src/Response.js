@@ -22,6 +22,12 @@ const Response = (_response: ServerResponse): ResponseHelper => {
 				? self
 				: throwError(`Property "${keys.join('.')}" of the response was "${fieldValue}", expected "${value}"`);
 		},
+		matchHeader(key: string, value: string) {
+			const headerValue = response.headers[key];
+			return headerValue === value
+				? self
+				: throwError(`Header "${key}" of the response was "${headerValue}", expected "${value}"`);
+		},
 		get(keys: Array<string>) {
 			const fieldValue = propPath(keys, response.data);
 			return fieldValue;

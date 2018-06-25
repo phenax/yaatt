@@ -59,6 +59,25 @@ describe('Response', () => {
 		});
 	});
 
+	describe('#matchHeader', () => {
+
+		it('should not throw error if the props match', () => {
+			const response = Response({
+				headers: {
+					'X-Access-Token': 'hrin4fwef'
+				}
+			});
+
+			expect(() => response.matchHeader('X-Access-Token', 'hrin4fwef')).not.toThrowError();
+		});
+
+		it('should throw error when the props dont match', () => {
+			const response = Response({ headers: { hello: 'b' } });
+
+			expect(() => response.matchHeader([ 'hello' ], 'world')).toThrowError();
+		});
+	});
+
 
 	describe('#matchSchema', () => {
 
