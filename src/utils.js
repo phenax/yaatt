@@ -44,7 +44,8 @@ const mapFutureAsync: MapFutureFunction = curry(
 	(fn, list) => Future.parallel(10, list.map(fn))
 );
 
-const request: (RequestOptions => Future) = Future.encaseP(axios);
+const request: (RequestOptions => Future) = Future.encaseP(options =>
+	request.mock? request.mock(options): axios(options));
 
 const tryF = (fn: (any) => any) => (...args: Array<any>) =>
 	Future.try(() => fn(...args));

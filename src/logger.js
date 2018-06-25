@@ -6,12 +6,29 @@ import { toUpper } from 'ramda';
 
 import type { TestSuite, TestCase } from './types';
 
-const logTestSuite = (testSuite: TestSuite) => {
+export const konsole = {
+	isEnabled: true,
+	log(...args: Array<any>) {
+		if(konsole.isEnabled) {
+			console.log(...args);
+		}
+	},
+	error() {},
+	mock({ log }: Object): (() => any) {
+		const oldLog = konsole.log;
+		konsole.log = log;
+		return () => {
+			konsole.log = oldLog;
+		};
+	},
+};
+
+export const logTestSuite = (testSuite: TestSuite) => {
 	const { url, method, label } = testSuite;
 
-	console.log();
-	console.log(chalk.bold(label));
-	console.log(
+	konsole.log();
+	konsole.log(chalk.bold(label));
+	konsole.log(
 		chalk.blue.bold(toUpper(method)),
 		chalk.blue(url),
 	);
@@ -19,32 +36,32 @@ const logTestSuite = (testSuite: TestSuite) => {
 	return testSuite;
 };
 
-const logTestCase = (testCase: TestCase, passed: bool = false) => {
+export const logTestCase = (testCase: TestCase, passed: bool = false) => {
 	const { label } = testCase;
 
 	if(passed) {
-		console.log(chalk.green('   -', label));
+		konsole.log(chalk.green('   -', label));
 	} else {
-		console.log(chalk.red('   x', label));
+		konsole.log(chalk.red('   x', label));
 	}
 
 	return testCase;
 };
 
-const logError = (e: Error) => {
+export const logError = (e: Error) => {
 	const { message, stack } = e;
 
-	console.log();
-	console.log(chalk.bgRed.bold('== Test failed with the following error(s) =='));
-	console.log();
-	console.log(chalk.red.bold(message));
-	console.log(chalk.red(stack));
+	konsole.log();
+	konsole.log(chalk.bgRed.bold('== Test failed with the following error(s) =='));
+	konsole.log();
+	konsole.log(chalk.red.bold(message));
+	konsole.log(chalk.red(stack));
 
 	return e;
 };
 
-const log = (label: string) => (data: any): any => {
-	console.log(
+export const log = (label: string) => (data: any): any => {
+	konsole.log(
 		chalk.blue.bold(
 			'>> ',
 			(new Date()).toString(),
@@ -56,12 +73,4 @@ const log = (label: string) => (data: any): any => {
 	return data;
 };
 
-const logNewLine = () => console.log('');
-
-module.exports = {
-	logTestCase,
-	logTestSuite,
-	logError,
-	logNewLine,
-	log,
-};
+export const logNewLine = () => konsole.log('');

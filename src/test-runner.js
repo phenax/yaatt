@@ -1,6 +1,6 @@
 // @flow
 
-import { pick, compose } from 'ramda';
+import { pick, compose, assoc, prop, identity, converge } from 'ramda';
 import Future from 'fluture';
 
 import { toParams, toTestCases, mapFutureSync, request, tryF } from './utils';
@@ -9,19 +9,16 @@ import { logTestSuite, logTestCase } from './logger';
 
 import type { Test, TestSuite, RequestOptions } from './types';
 
-const runTestCase = (testCase: Test): Future => {
+export const Request: (Object => RequestOptions) = compose(
+	converge(assoc('data'), [ compose(toParams, prop('data')), identity ]),
+	converge(assoc('params'), [ compose(toParams, prop('params')), identity ]),
+	pick([ 'method', 'url', 'headers', 'params', 'data' ]),
+);
+
+export const runTestCase = (testCase: Test): Future => {
 	const { test } = testCase;
 
-	const options: RequestOptions = pick([
-		'method',
-		'url',
-		'headers',
-		'params',
-		'data',
-	], { ...testCase, ...test });
-
-	options.params = toParams(options.params);
-	options.data = toParams(options.data);
+	const options: RequestOptions = Request({ ...testCase, ...test });
 
 	return request(options)
 		.map(Response)
@@ -36,14 +33,8 @@ const runTestCase = (testCase: Test): Future => {
 		});
 };
 
-const runTestSuite: (TestSuite => Future) = compose(
+export const runTestSuite: (TestSuite => Future) = compose(
 	mapFutureSync(runTestCase),
 	toTestCases,
 	logTestSuite,
 );
-
-
-module.exports = {
-	runTestCase,
-	runTestSuite,
-};
