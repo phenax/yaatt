@@ -2,7 +2,6 @@
 const {
 	throwError,
 	toParams,
-	toTestCases,
 } = require('../src/utils');
 
 describe('utils', () => {
