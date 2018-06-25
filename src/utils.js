@@ -5,7 +5,7 @@ import { curry } from 'ramda';
 import axios from 'axios';
 import Future from 'fluture';
 
-import type { QueryParams, TestError, TestSuite, Test, RequestOptions } from './types';
+import type { QueryParams, TestError, TestSuite, Test, RequestOptions, MapFutureFunction } from './types';
 
 const throwError = (e: TestError = 'Unknown Error') => {
 	if(typeof e === 'string' || typeof e === 'number')
@@ -32,8 +32,7 @@ const toTestCases = ({ url, method, tests }: TestSuite): Array<Test> =>
 			test: tests[label],
 		}));
 
-// mapFutureSync :: ((A, number, any) -> Future) -> Array<any> -> Future
-const mapFutureSync = curry(
+const mapFutureSync: MapFutureFunction = curry(
 	(fn, list) => list.reduce(
 		(fChain, item, index) =>
 			fChain.chain(data => fn(item, index, data)),
@@ -41,8 +40,7 @@ const mapFutureSync = curry(
 	)
 );
 
-// mapFutureAsync :: ((A, number, any) -> Future) -> Array<any> -> Future
-const mapFutureAsync = curry(
+const mapFutureAsync: MapFutureFunction = curry(
 	(fn, list) => Future.parallel(10, list.map(fn))
 );
 
@@ -50,8 +48,6 @@ const request: (RequestOptions => Future) = Future.encaseP(axios);
 
 const tryF = (fn: (any) => any) => (...args: Array<any>) =>
 	Future.try(() => fn(...args));
-
-
 
 module.exports = {
 	throwError,

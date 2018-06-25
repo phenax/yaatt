@@ -7,12 +7,12 @@ import { toParams, toTestCases, mapFutureSync, request, tryF } from './utils';
 import Response from './Response';
 import { logTestSuite, logTestCase } from './logger';
 
-import type { Test, TestSuite } from './types';
+import type { Test, TestSuite, RequestOptions } from './types';
 
 const runTestCase = (testCase: Test): Future => {
 	const { test } = testCase;
 
-	const options = pick([
+	const options: RequestOptions = pick([
 		'method',
 		'url',
 		'headers',
