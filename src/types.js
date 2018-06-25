@@ -19,6 +19,6 @@ export type TestSuite = {
 };
 
 export type TestCase = {
-	label: String,
+	label: string,
 	onResponse: (Response) => Response
 };

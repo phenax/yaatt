@@ -1,9 +1,9 @@
 {
   "name": "yaatt",
   "version": "0.0.0-test.1",
-  "description": "__",
+  "description": "Yet another api testing toolkit. Easy tests and documentation for your http api",
   "main": "index.js",
-  "repository": "__",
+  "repository": "https://github.com/phenax/yaatt",
   "author": "Akshay Nair <phenax5@gmail.com>",
   "license": "MIT",
   "bin": {
