@@ -1,6 +1,6 @@
 
-const Response = require('../src/Response');
-const { Joi } = require('../');
+import Response from '../src/Response';
+import { Joi } from '../index.js';
 
 describe('Response', () => {
 

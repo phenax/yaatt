@@ -1,9 +1,9 @@
 //@flow
 
-const { pick, path: propPath } = require('ramda');
-const Joi = require('joi');
+import { pick, path as propPath } from 'ramda';
+import Joi from 'joi';
 
-const { throwError } = require('./utils');
+import { throwError } from './utils';
 
 import type { ServerResponse, ResponseHelper } from './types';
 
@@ -26,7 +26,7 @@ const Response = (_response: ServerResponse): ResponseHelper => {
 			const fieldValue = propPath(keys, response.data);
 			return fieldValue;
 		},
-		matchSchema(schema: Object) {
+		matchSchema(schema: Joi) {
 			const { error } = Joi.validate(response.data, schema);
 			error && throwError(error);
 			return self;

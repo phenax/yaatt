@@ -1,8 +1,5 @@
 
-const {
-	throwError,
-	toParams,
-} = require('../src/utils');
+import { throwError, toParams } from '../src/utils';
 
 describe('utils', () => {
 
