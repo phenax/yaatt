@@ -1,45 +1,24 @@
 // @flow
 
-import { pick, compose, assoc, prop, identity, converge, merge } from 'ramda';
+import { compose } from 'ramda';
 import Future from 'fluture';
 
-import { toParams, toTestCases, mapFutureSync, request, tryF } from './utils';
-import Response from './Response';
+import { toTestCases, mapFutureSync } from './utils';
+import Request from './Request';
 import { logTestSuite, logTestCase } from './logger';
 
-import type { Test, TestSuite, RequestOptions } from './types';
+import type { Test, TestSuite } from './types';
 
-export const Request: (Object => RequestOptions) = compose(
-	merge({
-		execute() {
-			return request(this)
-				.map(Response)
-				.chain(tryF(this.onResponse));
-		},
-	}),
-	converge(assoc('data'), [ compose(toParams, prop('data')), identity ]),
-	converge(assoc('params'), [ compose(toParams, prop('params')), identity ]),
-	pick([
-		'method',
-		'url',
-		'headers',
-		'params',
-		'data',
-		'onResponse',
-	]),
-);
 
 export const runTestCase = (testCase: Test): Future => {
 	let { test, label } = testCase;
 
-	if(typeof test === 'function') {
-		test = test({});
-	}
+	let getTest = (typeof test !== 'function')? (() => test): test;
 
 	test.label = label;
 
-	return Request({ ...testCase, ...test })
-		.execute()
+	return Request(testCase)
+		.execute(getTest)
 		.map(resp => {
 			logTestCase(test, true);
 			return resp;

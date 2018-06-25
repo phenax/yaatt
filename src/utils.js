@@ -23,12 +23,13 @@ const toParams = (query: QueryParams) => {
 	return query;
 };
 
-const toTestCases = ({ url, method, tests }: TestSuite): Array<Test> =>
+const toTestCases = ({ url, method, dependencies, tests }: TestSuite): Array<Test> =>
 	Object.keys(tests)
 		.map(label => ({
 			url,
 			method,
 			label,
+			dependencies,
 			test: tests[label],
 		}));
 

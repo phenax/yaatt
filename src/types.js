@@ -5,10 +5,12 @@ import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 
 export type QueryParams = string | Object;
+export type UrlString = string;
+
+export type RequestOptions = AxiosRequestConfig;
+export type ServerResponse = AxiosResponse;
 
 export type TestError = string | Error;
-
-export type ServerResponse = AxiosResponse;
 
 export type ResponseHelper = {
 	get: (Array<string>) => any,
@@ -17,28 +19,38 @@ export type ResponseHelper = {
 	assert: ((ServerResponse, Object) => any) => ResponseHelper,
 };
 
-export type UrlString = string;
+export type onResponseCallback = (Response) => any;
 
-export type TestSuite = {
+
+export type RequestTestCase = {
 	label: string,
 	url: UrlString,
 	method: string,
+};
+
+
+export type Dependency = {
+	...RequestTestCase,
+	onResponse: onResponseCallback,
+};
+
+export type TestSuite = {
+	...RequestTestCase,
+	dependencies: { [key: string]: Dependency },
 	tests: { [key: string]: TestCase },
 };
 
 export type Test = {
-	label: string,
-	url: UrlString,
-	method: string,
+	...RequestTestCase,
+	dependencies: { [key: string]: Dependency },
 	test: TestCase,
 };
 
 export type TestCase = {
+	...RequestOptions,
 	label: string,
-	onResponse: (Response) => any,
+	onResponse: onResponseCallback,
 };
 
 export type MapFutureFunction =
-	((any, number, any) => Future) => Array<any> => Future
-
-export type RequestOptions = AxiosRequestConfig;
+	((any, number, any) => Future) => Array<any> => Future;
