@@ -1,31 +1,24 @@
 //@flow
 
-type QueryParams = string|Object;
+export type QueryParams = string|Object;
 
-type ServerResponse = {
+export type ServerResponse = {
 	data: any,
 	headers: Object,
 	status: number,
 };
 
-type Response = Object;
+export type Response = Object;
 
-type UrlString = string;
+export type UrlString = string;
 
-type TestSuite = {
+export type TestSuite = {
 	url: UrlString,
 	method: string,
 	label: string,
 };
 
-type TestCase = {
+export type TestCase = {
 	label: String,
 	onResponse: (Response) => Response
-};
-
-module.exports = {
-	QueryParams,
-	ServerResponse,
-	TestSuite,
-	TestCase,
 };

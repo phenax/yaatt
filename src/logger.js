@@ -1,10 +1,10 @@
-/* eslint-disable no-console */
 // @flow
+/* eslint-disable no-console */
 
-const chalk = require('chalk');
-const { toUpper } = require('ramda');
+import chalk from 'chalk';
+import { toUpper } from 'ramda';
 
-const { TestSuite, TestCase } = require('./types');
+import type { TestSuite, TestCase } from './types';
 
 const logTestSuite = (testSuite: TestSuite) => {
 	const { url, method, label } = testSuite;
