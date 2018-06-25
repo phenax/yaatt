@@ -1,14 +1,15 @@
-// @flowa
+// @flow
 
 import { pick, compose } from 'ramda';
+import Future from 'fluture';
 
 import { toParams, toTestCases, mapFutureSync, request, tryF } from './utils';
 import Response from './Response';
 import { logTestSuite, logTestCase } from './logger';
 
-// import type { TestCase } from './types';
+import type { Test, TestSuite } from './types';
 
-const runTestCase = (testCase) => {
+const runTestCase = (testCase: Test): Future => {
 	const { test } = testCase;
 
 	const options = pick([
@@ -26,16 +27,16 @@ const runTestCase = (testCase) => {
 		.map(Response)
 		.chain(tryF(test.onResponse))
 		.map(resp => {
-			logTestCase(testCase, true);
+			logTestCase(testCase.test, true);
 			return resp;
 		})
 		.mapRej(e => {
-			logTestCase(testCase, false);
+			logTestCase(testCase.test, false);
 			return e;
 		});
 };
 
-const runTestSuite = compose(
+const runTestSuite: (TestSuite => Future) = compose(
 	mapFutureSync(runTestCase),
 	toTestCases,
 	logTestSuite,

@@ -48,7 +48,7 @@ const mapFutureAsync = curry(
 
 const request: (RequestOptions => Future) = Future.encaseP(axios);
 
-const tryF = (fn: () => Future) => (...args: Array<any>) =>
+const tryF = (fn: (any) => any) => (...args: Array<any>) =>
 	Future.try(() => fn(...args));
 
 

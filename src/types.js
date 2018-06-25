@@ -2,6 +2,7 @@
 
 import type { AxiosRequestConfig } from 'axios';
 
+
 export type QueryParams = string | Object;
 
 export type TestError = string | Error;
@@ -17,22 +18,22 @@ export type Response = Object;
 export type UrlString = string;
 
 export type TestSuite = {
+	label: string,
 	url: UrlString,
 	method: string,
-	label: string,
 	tests: { [key: string]: TestCase },
+};
+
+export type Test = {
+	label: string,
+	url: UrlString,
+	method: string,
+	test: TestCase,
 };
 
 export type TestCase = {
 	label: string,
-	onResponse: (Response) => Response
-};
-
-export type Test = {
-	url: UrlString,
-	method: string,
-	label: string,
-	test: TestCase,
+	onResponse: (Response) => any,
 };
 
 export type RequestOptions = AxiosRequestConfig;
