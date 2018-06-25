@@ -16,7 +16,11 @@ export const Request: (Object => RequestOptions) = compose(
 );
 
 export const runTestCase = (testCase: Test): Future => {
-	const { test } = testCase;
+	let { test } = testCase;
+
+	if(typeof test === 'function') {
+		test = test({});
+	}
 
 	const options: RequestOptions = Request({ ...testCase, ...test });
 

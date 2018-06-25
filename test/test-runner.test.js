@@ -76,6 +76,31 @@ describe('Test running', () => {
 					}
 				);
 		});
+
+		it('should allow test as a function', done => {
+
+			const testUrl = '/aasdasas';
+
+			const testCase = {
+				url: '/stuff',
+				method: 'get',
+				test: () => ({
+					url: testUrl,
+					onResponse: resp => resp.get([]),
+				}),
+			};
+
+			request.mock = data => Promise.resolve({ data });
+
+			runTestCase(testCase)
+				.fork(
+					done,
+					({ url }) => {
+						expect(url).toEqual(testUrl);
+						done();
+					}
+				);
+		});
 	});
 
 	describe('runTestSuite', () => {
