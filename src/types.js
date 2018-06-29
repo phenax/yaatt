@@ -21,27 +21,25 @@ export type ResponseHelper = {
 
 export type onResponseCallback = (Response) => any;
 
-
-export type RequestTestCase = {
+export type Dependency = {
 	label: string,
 	url: UrlString,
 	method: string,
-};
-
-
-export type Dependency = {
-	...RequestTestCase,
 	onResponse: onResponseCallback,
 };
 
 export type TestSuite = {
-	...RequestTestCase,
+	label: string,
+	url: UrlString,
+	method: string,
 	dependencies: { [key: string]: Dependency },
 	tests: { [key: string]: TestCase },
 };
 
 export type Test = {
-	...RequestTestCase,
+	label: string,
+	url: UrlString,
+	method: string,
 	dependencies: { [key: string]: Dependency },
 	test: TestCase,
 };
