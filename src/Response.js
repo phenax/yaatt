@@ -1,49 +1,42 @@
 //@flow
 
-import { pick, path as propPath } from 'ramda';
+import { pick, path as propPath, compose } from 'ramda';
 import Joi from 'joi';
 
-import { throwError } from './utils';
+import { createClass, throwError } from './utils';
 
-import type { ServerResponse, ResponseHelper } from './types';
+import type { ServerResponse, ResponseClass } from './types';
 
-const Response = (_response: ServerResponse): ResponseHelper => {
+const Response: ResponseClass = createClass({
+	constructor: compose(
+		pick([
+			'data',
+			'status',
+			'headers',
+		]),
+	),
+	matchProp: self => (keys: Array<string>, value: any) => {
+		const fieldValue = self.get(keys);
+		return fieldValue === value
+			? self
+			: throwError(`Property "${keys.join('.')}" of the response was "${fieldValue}", expected "${value}"`);
+	},
+	matchHeader: self => (key: string, value: string) => {
+		const headerValue = self.headers[key];
+		return headerValue === value
+			? self
+			: throwError(`Header "${key}" of the response was "${headerValue}", expected "${value}"`);
+	},
+	get: self => (keys: Array<string>) => propPath(keys, self.data),
+	matchSchema: self => (schema: Joi) => {
+		const { error } = Joi.validate(self.data, schema);
+		error && throwError(error);
+		return self;
+	},
+	assert: self => (fn: (ServerResponse, Object) => any) => {
+		fn(self, { throwError });
+		return self;
+	},
+});
 
-	const response: ServerResponse = pick([
-		'data',
-		'status',
-		'headers',
-	], _response);
-
-	const self = {
-		matchProp(keys: Array<string>, value: any) {
-			const fieldValue = self.get(keys);
-			return fieldValue === value
-				? self
-				: throwError(`Property "${keys.join('.')}" of the response was "${fieldValue}", expected "${value}"`);
-		},
-		matchHeader(key: string, value: string) {
-			const headerValue = response.headers[key];
-			return headerValue === value
-				? self
-				: throwError(`Header "${key}" of the response was "${headerValue}", expected "${value}"`);
-		},
-		get(keys: Array<string>) {
-			const fieldValue = propPath(keys, response.data);
-			return fieldValue;
-		},
-		matchSchema(schema: Joi) {
-			const { error } = Joi.validate(response.data, schema);
-			error && throwError(error);
-			return self;
-		},
-		assert(fn: (ServerResponse, Object) => any) {
-			fn(response, { throwError });
-			return self;
-		},
-	};
-
-	return self;
-};
-
-module.exports = Response;
+export default Response;

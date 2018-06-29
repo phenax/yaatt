@@ -57,5 +57,7 @@ export type KeyValue = {
 	value: any,
 };
 
+export type ResponseClass = ServerResponse => ResponseHelper;
+
 export type MapFutureFunction =
 	((any, number, any) => Future) => Array<any> => Future;
