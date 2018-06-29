@@ -1,46 +1,15 @@
 // @flow
 
-import { pick, compose, assoc, prop, identity, converge, merge, curry } from 'ramda';
+import { pick, compose, merge, prop } from 'ramda';
 import Future from 'fluture';
 
-import { toParams, mapFutureAsync, request, tryF } from './utils';
+import { toParams, mapFutureAsync, request, tryF, mapToList, createClass, listToMap, mutateField, constant } from './utils';
 import Response from './Response';
-
-
-const constant = x => () => x;
-
-const mapToList = (objectMap: Object) =>
-	Object.keys(objectMap).map(key => ({ key, value: objectMap[key] }));
-
-const listToMap = (list: Array<Object>) =>
-	list.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {});
-
-const initializeMethods = curry((methods, obj) => {
-	Object.keys(methods).forEach(name => {
-		obj[name] = methods[name](obj);
-	});
-	return obj;
-});
-
-const createClass = ({ constructor = identity, ...methods }) => compose(
-	initializeMethods(methods),
-	constructor,
-);
 
 const callDependency = ({ key, value }: Object): Future =>
 	Request(value)
 		.execute()
 		.map(dependency => ({ key, value: dependency }));
-
-const executeDependencies = compose(
-	mapFutureAsync(callDependency),
-	mapToList,
-);
-
-const mutateField = (fieldName, ...fns) => converge(assoc(fieldName), [
-	compose(...fns, prop(fieldName)),
-	identity
-]);
 
 const Request = createClass({
 	constructor: compose(
@@ -60,7 +29,7 @@ const Request = createClass({
 		]),
 	),
 	execute: (self: any) => (getOptions: any => any) =>
-		executeDependencies(self.dependencies || {})
+		self.executeDependencies()
 			.map(listToMap)
 			.map(dependencies => ({ request: self, dependencies }))
 			.chain(compose(
@@ -75,6 +44,11 @@ const Request = createClass({
 		mutateField('data', toParams),
 		mutateField('params', toParams),
 	),
+	executeDependencies: self => () => compose(
+		mapFutureAsync(callDependency),
+		mapToList,
+		prop('dependencies'),
+	)(self),
 });
 
 

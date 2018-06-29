@@ -52,5 +52,10 @@ export type TestCase = {
 	onResponse: onResponseCallback,
 };
 
+export type KeyValue = {
+	key: string,
+	value: any,
+};
+
 export type MapFutureFunction =
 	((any, number, any) => Future) => Array<any> => Future;
