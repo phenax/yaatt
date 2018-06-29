@@ -49,30 +49,30 @@ describe('Test running', () => {
 				);
 		});
 
-		// it('should make an http request with the parsed params and data', done => {
+		it('should make an http request with the parsed params and data', done => {
 
-		// 	const parsedData = { foo: 'baar', wow: 'ocools' };
+			const parsedData = { foo: 'baar', wow: 'ocools' };
 
-		// 	const testCase = {
-		// 		url: '/stuff',
-		// 		method: 'get',
-		// 		test: {
-		// 			params: 'foo=baar&wow=ocools',
-		// 			data: 'foo=baar&wow=ocools',
-		// 			onResponse: resp => resp.get([]),
-		// 		},
-		// 	};
+			const testCase = {
+				url: '/stuff',
+				method: 'get',
+				test: {
+					params: 'foo=baar&wow=ocools',
+					data: 'foo=baar&wow=ocools',
+					onResponse: resp => resp.get([]),
+				},
+			};
 
-		// 	runTestCase(testCase)
-		// 		.fork(
-		// 			done,
-		// 			({ data, params }) => {
-		// 				expect(params).toEqual(parsedData);
-		// 				expect(data).toEqual(parsedData);
-		// 				done();
-		// 			}
-		// 		);
-		// });
+			runTestCase(testCase)
+				.fork(
+					done,
+					({ data, params }) => {
+						expect(params).toEqual(parsedData);
+						expect(data).toEqual(parsedData);
+						done();
+					}
+				);
+		});
 
 		it('should allow test as a function', done => {
 
@@ -123,30 +123,30 @@ describe('Test running', () => {
 				);
 		});
 
-		// it('should run all test cases inside testSuite', done => {
+		it('should run all test cases inside testSuite', done => {
 
-		// 	const onResponse = jest.fn();
+			const onResponse = jest.fn();
 
-		// 	const testSuite = {
-		// 		label: 'Httpbin Get call',
-		// 		url: '/get',
-		// 		method: 'get',
-		// 		tests: {
-		// 			'should do stuff 1': { onResponse },
-		// 			'should do stuff 2': { onResponse },
-		// 			'should do stuff 3': { onResponse },
-		// 		},
-		// 	};
+			const testSuite = {
+				label: 'Httpbin Get call',
+				url: '/get',
+				method: 'get',
+				tests: {
+					'should do stuff 1': { onResponse },
+					'should do stuff 2': { onResponse },
+					'should do stuff 3': { onResponse },
+				},
+			};
 
-		// 	runTestSuite(testSuite)
-		// 		.fork(
-		// 			e => done(`Future failed :: ${e}`),
-		// 			() => {
-		// 				expect(onResponse).toHaveBeenCalledTimes(3);
-		// 				done();
-		// 			},
-		// 		);
-		// });
+			runTestSuite(testSuite)
+				.fork(
+					e => done(`Future failed :: ${e}`),
+					() => {
+						expect(onResponse).toHaveBeenCalledTimes(3);
+						done();
+					},
+				);
+		});
 
 		it('should run auth dependency and call case ith the dependency', done => {
 

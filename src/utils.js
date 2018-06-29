@@ -17,7 +17,7 @@ const toParams = (query: QueryParams) => {
 	if(!query) return undefined;
 
 	if(typeof query === 'string') {
-		return parse(query); // TODO: Parse string
+		return parse(query);
 	}
 
 	return query;

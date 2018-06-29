@@ -11,11 +11,10 @@ import type { Test, TestSuite } from './types';
 
 
 export const runTestCase = (testCase: Test): Future => {
-	let { test, label } = testCase;
-
-	let getTest = (typeof test !== 'function')? (() => test): test;
-
+	const { test, label } = testCase;
 	test.label = label;
+
+	const getTest = (typeof test !== 'function')? (() => test): test;
 
 	return Request(testCase)
 		.execute(getTest)
