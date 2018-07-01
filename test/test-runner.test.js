@@ -74,31 +74,31 @@ describe('Test running', () => {
 				);
 		});
 
-		// it('should allow test as a function', done => {
+		it('should allow test as a function', done => {
 
-		// 	const url = '/aasdasas';
-		// 	const params = 'abc=cde';
+			const url = '/aasdasas';
+			const params = 'abc=cde';
 
-		// 	const testCase = {
-		// 		url: '/stuff',
-		// 		method: 'get',
-		// 		test: () => ({
-		// 			url,
-		// 			params,
-		// 			onResponse: resp => resp.get([]),
-		// 		}),
-		// 	};
+			const testCase = {
+				url: '/stuff',
+				method: 'get',
+				test: () => ({
+					url,
+					params,
+					onResponse: resp => resp.get([]),
+				}),
+			};
 
-		// 	runTestCase(testCase)
-		// 		.fork(
-		// 			done,
-		// 			({ url, params }) => {
-		// 				expect(url).toBe(url);
-		// 				expect(params).toEqual({ abc: 'cde' });
-		// 				done();
-		// 			}
-		// 		);
-		// });
+			runTestCase(testCase)
+				.fork(
+					done,
+					({ url, params }) => {
+						expect(url).toBe(url);
+						expect(params).toEqual({ abc: 'cde' });
+						done();
+					}
+				);
+		});
 	});
 
 	// describe('runTestSuite', () => {

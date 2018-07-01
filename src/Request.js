@@ -1,6 +1,6 @@
 // @flow
 
-import { pick, compose, merge, prop, evolve, identity } from 'ramda';
+import { pick, compose, prop, evolve, identity , mergeDeepRight} from 'ramda';
 import Future from 'fluture';
 
 import { toParams, mapFutureAsync, request, tryF, mapToList, createClass, listToMap, constant } from './utils';
@@ -23,19 +23,19 @@ const normalize = evolve({
 	}
 });
 
+const defaultProps = {
+	test: {
+		onResponse: res => res.get([]),
+		params: {},
+		data: {},
+		label: '',
+	},
+};
+
 const Request = createClass({
 	constructor: compose(
-		// self => { console.log('>> test', self.test); return self; },
 		normalize,
-		merge({
-			test: {
-				onResponse: res => res.get([]),
-				params: {},
-				data: {},
-			},
-			method: 'get',
-			dependencies: {},
-		}),
+		mergeDeepRight(defaultProps),
 		pick([
 			'url',
 			'method',
@@ -44,8 +44,10 @@ const Request = createClass({
 			'dependencies',
 		]),
 	),
-	onResponse: ({ test }) => test.onResponse || identity,
-	execute: (self: any) => (getOptions: any => any) =>
+
+	onResponse: self => (...args) => self.test.onResponse(...args),
+
+	execute: self => (getOptions: any => any) =>
 		self.executeDependencies()
 			.map(listToMap)
 			.map(dependencies => ({ request: self, dependencies }))
@@ -54,17 +56,21 @@ const Request = createClass({
 				self.toRequest,
 				self.merge,
 				normalize,
+				mergeDeepRight(defaultProps),
 				test => ({ test }),
 				getOptions || constant({}),
 			))
 			.map(Response)
 			.chain(tryF(self.onResponse)),
+
 	merge: self => obj => Object.assign(self, obj),
+
 	toRequest: () => ({ url, method, test }) => ({
 		url,
 		method,
 		...test,
 	}),
+
 	executeDependencies: self => () => compose(
 		mapFutureAsync(callDependency),
 		mapToList,
