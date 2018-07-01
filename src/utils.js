@@ -1,7 +1,7 @@
 // @flow
 
 import { parse } from 'querystring';
-import { curry, identity, compose, converge, assoc, prop } from 'ramda';
+import { curry, identity, compose } from 'ramda';
 import axios from 'axios';
 import Future from 'fluture';
 
@@ -71,8 +71,3 @@ export const createClass = ({ constructor = identity, ...methods }: Object) => c
 	initializeMethods(methods),
 	constructor,
 );
-
-export const mutateField = (fieldName: string, ...fns: Array<Function>) => converge(assoc(fieldName), [
-	compose(...fns, prop(fieldName)),
-	identity
-]);

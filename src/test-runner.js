@@ -16,6 +16,8 @@ export const runTestCase = (testCase: Test): Future => {
 
 	const getTest = (typeof test !== 'function')? (() => test): test;
 
+	// console.log(testCase);
+
 	return Request(testCase)
 		.execute(getTest)
 		.map(resp => {

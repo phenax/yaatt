@@ -1,55 +1,75 @@
 // @flow
 
-import { pick, compose, merge, prop } from 'ramda';
+import { pick, compose, merge, prop, evolve, identity } from 'ramda';
 import Future from 'fluture';
 
-import { toParams, mapFutureAsync, request, tryF, mapToList, createClass, listToMap, mutateField, constant } from './utils';
+import { toParams, mapFutureAsync, request, tryF, mapToList, createClass, listToMap, constant } from './utils';
 import Response from './Response';
 
 const callDependency = ({ key, value }: Object): Future =>
-	Request(value)
+	Request(dependencyToRequest(value))
 		.execute()
 		.map(dependency => ({ key, value: dependency }));
 
+const dependencyToRequest = ({ onResponse, params, data, ...dependency }) => ({
+	...dependency,
+	test: { onResponse, params, data },
+});
+
+const normalize = evolve({
+	test: {
+		data: toParams,
+		params: toParams,
+	}
+});
+
 const Request = createClass({
 	constructor: compose(
+		// self => { console.log('>> test', self.test); return self; },
+		normalize,
 		merge({
-			onResponse: res => res.get([]),
+			test: {
+				onResponse: res => res.get([]),
+				params: {},
+				data: {},
+			},
 			method: 'get',
 			dependencies: {},
 		}),
 		pick([
-			'method',
 			'url',
+			'method',
 			'headers',
-			'params',
-			'data',
-			'onResponse',
+			'test',
 			'dependencies',
 		]),
 	),
+	onResponse: ({ test }) => test.onResponse || identity,
 	execute: (self: any) => (getOptions: any => any) =>
 		self.executeDependencies()
 			.map(listToMap)
 			.map(dependencies => ({ request: self, dependencies }))
 			.chain(compose(
 				request,
-				self.normalize,
-				merge(self),
-				getOptions || constant({})
+				self.toRequest,
+				self.merge,
+				normalize,
+				test => ({ test }),
+				getOptions || constant({}),
 			))
 			.map(Response)
 			.chain(tryF(self.onResponse)),
-	normalize: () => compose(
-		mutateField('data', toParams),
-		mutateField('params', toParams),
-	),
+	merge: self => obj => Object.assign(self, obj),
+	toRequest: () => ({ url, method, test }) => ({
+		url,
+		method,
+		...test,
+	}),
 	executeDependencies: self => () => compose(
 		mapFutureAsync(callDependency),
 		mapToList,
 		prop('dependencies'),
 	)(self),
 });
-
 
 export default Request;
