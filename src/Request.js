@@ -51,21 +51,18 @@ const Request = createClass({
 			.map(dependencies => ({ request: req, dependencies }))
 			.chain(compose(
 				request,
-				// log('Hello'),
 				prop('request'),
-				constant(req),
-				// req.merge,
-				// normalize,
-				// applyDefaults,
-				// request => ({ request }),
-				// req.getDynamicOptions,
+				mergeDeepRight(req),
+				normalize,
+				applyDefaults,
+				req.getDynamicOptions,
 			))
 			.map(Response)
 			.chain(tryF(req.handleResponse)),
 
-	merge: req => obj => Object.assign(req, obj),
-
-	getDynamicOptions: req => (...args) => req.request._(...args),
+	getDynamicOptions: req => (...args) => ({
+		request: req.request._(...args),
+	}),
 
 	executeDependencies: req => () => compose(
 		mapFutureAsync(callDependency),

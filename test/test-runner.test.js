@@ -81,8 +81,11 @@ describe('Test running', () => {
 			const testCase = {
 				request: {
 					url,
-					params,
-					// _: () => ({ params }),
+					params: {
+						wow: 'cool',
+						abc: 'old_value',
+					},
+					_: () => ({ params }),
 				},
 				onResponse: resp => resp.get([]),
 			};
@@ -92,7 +95,10 @@ describe('Test running', () => {
 					done,
 					({ url, params }) => {
 						expect(url).toBe(url);
-						expect(params).toEqual({ abc: 'cde' });
+						expect(params).toEqual({
+							abc: 'cde',
+							wow: 'cool',
+						});
 						done();
 					}
 				);
@@ -153,37 +159,43 @@ describe('Test running', () => {
 				);
 		});
 
-		// it('should run auth dependency and call case ith the dependency', done => {
+		it('should run auth dependency and call case ith the dependency', done => {
 
-		// 	const testToken = '235tv3wervwegr';
+			const testToken = '235tv3wervwegr';
 
-		// 	const testSuite = {
-		// 		label: 'Httpbin Get call',
-		// 		url: '/get',
-		// 		method: 'get',
-		// 		dependencies: {
-		// 			auth: {
-		// 				url: '/user/login',
-		// 				method: 'post',
-		// 				data: { uid: 'hello_world' },
-		// 				onResponse: () => ({ token: testToken }),
-		// 			},
-		// 		},
-		// 		tests: {
-		// 			'should do stuff': ({ dependencies }) => {
-		// 				// console.log({dependencies});
-		// 				expect(dependencies.auth.token).toBe(testToken);
-		// 				done();
-		// 				return { onResponse: () => {} };
-		// 			},
-		// 		},
-		// 	};
+			const testSuite = {
+				label: 'Httpbin Get call',
+				request: {
+					url: '/get',
+					method: 'get',
+				},
+				dependencies: {
+					auth: {
+						request: {
+							url: '/user/login',
+							method: 'post',
+							data: { uid: 'hello_world' },
+						},
+						onResponse: () => ({ token: testToken }),
+					},
+				},
+				tests: {
+					'should do stuff': {
+						request: {
+							_: ({ dependencies }) => {
+								expect(dependencies.auth.token).toBe(testToken);
+								done();
+							},
+						},
+					},
+				},
+			};
 
-		// 	runTestSuite(testSuite)
-		// 		.fork(
-		// 			e => done(`Future failed :: ${e}`),
-		// 			() => {},
-		// 		);
-		// });
+			runTestSuite(testSuite)
+				.fork(
+					e => done(`Future failed :: ${e}`),
+					() => {},
+				);
+		});
 	});
 });
