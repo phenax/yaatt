@@ -1,16 +1,24 @@
 // @flow
 
 import { parse } from 'querystring';
-import { curry, identity, compose , construct} from 'ramda';
+import { curry, identity, compose } from 'ramda';
 import axios from 'axios';
 import Future from 'fluture';
 
 import type { QueryParams, TestError, TestSuite, TestCase, RequestOptions, MapFutureFunction, Pair } from './types';
 
-export const throwError = (e: TestError = 'Unknown Error') => {
-	if(e instanceof Error)
-		throw e;
-	throw new Error(e);
+type ThrowErrorOptions = { future: bool, promise: bool };
+export const throwError = (e: TestError = 'Unknown Error', options: ThrowErrorOptions) => {
+	const error = (e instanceof Error)? e: new Error(e);
+	const { future, promise } = options || {};
+
+	if(promise) {
+		return Promise.reject(error);
+	} else if(future) {
+		return Future.reject(error);
+	}
+
+	throw error;
 };
 
 export const toParams = (query: QueryParams) => {

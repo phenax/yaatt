@@ -21,6 +21,31 @@ describe('utils', () => {
 			e = 'Unknown Error';
 			expect(() => throwError(e)).toThrow(e);
 		});
+
+
+		it('should return rejected promise is promise option is passed', done => {
+			const errorMessage = 'Unknown Error';
+
+			throwError(errorMessage, { promise: true })
+				.then(() => done('Promise should have been rejected'))
+				.catch(e => {
+					expect(e.message).toBe(errorMessage);
+					done();
+				});
+		});
+
+		it('should return rejected future is future option is passed', done => {
+			const errorMessage = 'Unknown Error';
+
+			throwError(errorMessage, { future: true })
+				.fork(
+					e => {
+						expect(e.message).toBe(errorMessage);
+						done();
+					},
+					() => done('Future should have been rejected')
+				);
+		});
 	});
 
 	describe('toParams', () => {
