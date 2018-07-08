@@ -28,8 +28,10 @@ sudo npm i -g yaatt
 ```js
 module.exports = {
     label: 'Httpbin Get call', // A label for your test suite
-    url: 'http://httpbin.org/get', // API endpoint
-    method: 'get', // HTTP method
+    request: {
+        url: 'http://httpbin.org/get', // API endpoint
+        method: 'get', // HTTP method
+    },
     tests: {
         'should do stuff': { /* Test case */ },
     },
@@ -42,12 +44,16 @@ module.exports = {
 ```js
 module.exports = {
     label: 'Get user data',
-    url: 'https://some-domain.com/api/user',
-    method: 'get',
+    request: {
+        url: 'https://some-domain.com/api/user',
+        method: 'get',
+    },
     tests: {
         'should fetch Waluigi\'s information from api': {
-            params: { // Query parameters
-                userid: 'ZnVjayB5b3U=',
+            request: {
+                params: { // Query parameters
+                    userid: 'ZnVjayB5b3U=',
+                },
             },
             onResponse: response =>
                 response
@@ -101,10 +107,10 @@ module.exports = {
 ```
 
 
-### Running your tests
+### Running your test suite
 
 ```
-yaatt ./path/to/yourtest1.test.js ./path/to/yourtest2.test.js
+yaatt ./path/to/yourtestsuite1.suite.js ./path/to/yourtestsuite2.suite.js
 ```
 
 You can even use glob paths
