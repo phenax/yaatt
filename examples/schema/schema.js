@@ -10,19 +10,25 @@ const schema = Joi.object().keys({
 
 module.exports = {
 	label: 'Httpbin Get call with schema validation',
-	url: 'http://httpbin.org/get',
-	method: 'get',
+	request: {
+		url: 'http://httpbin.org/get',
+		method: 'get',
+	},
 	tests: {
 		'should have name set to Waluigi': {
-			params: {
-				name: 'Waluigi',
+			request: {
+				params: {
+					name: 'Waluigi',
+				},
 			},
 			onResponse: response =>
 				response.matchSchema(schema)
 		},
 		'should be able to extend schema': {
-			params: {
-				name: 'Its-a me! Mario!',
+			request: {
+				params: {
+					name: 'Its-a me! Mario!',
+				},
 			},
 			onResponse: response =>
 				response

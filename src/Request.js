@@ -45,17 +45,19 @@ const Request = createClass({
 
 	handleResponse: req => (...args) => req.onResponse(...args),
 
-	execute: req => () =>
+	execute: req => (): Future =>
 		req.executeDependencies()
 			.map(listToMap)
 			.map(dependencies => ({ request: req, dependencies }))
+			.map(compose(
+				normalize,
+				applyDefaults,
+				req.getDynamicOptions,
+			))
 			.chain(compose(
 				request,
 				prop('request'),
 				mergeDeepRight(req),
-				normalize,
-				applyDefaults,
-				req.getDynamicOptions,
 			))
 			.map(Response)
 			.chain(tryF(req.handleResponse)),
@@ -64,7 +66,7 @@ const Request = createClass({
 		request: req.request._(...args),
 	}),
 
-	executeDependencies: req => () => compose(
+	executeDependencies: req => (): Future => compose(
 		mapFutureAsync(callDependency),
 		mapToList,
 		prop('dependencies'),

@@ -1,24 +1,34 @@
 
+const uid = 'hello_world_ahjdshk8';
+
 module.exports = {
-	label: 'Httpbin Get call',
-	url: 'http://httpbin.org/get',
-	method: 'get',
+	label: 'Http get call after authentication (dependency)',
+	request: {
+		url: 'http://httpbin.org/get',
+		method: 'get',
+	},
 	dependencies: {
 		auth: {
-			url: 'http://httpbin.org/post',
-			method: 'post',
-			data: { uid: 'hello_world' },
-			onResponse: r => JSON.stringify(r.get([ 'data' ])),
+			request: {
+				url: 'http://httpbin.org/post',
+				method: 'post',
+				data: { uid },
+			},
+			onResponse: r => JSON.parse(r.get([ 'data' ])),
 		}
 	},
 	tests: {
-		'should have name set to Waluigi': ({ dependencies }) => ({
-			params: {
-				uid: dependencies.auth.uid,
+		'should have uid set correctly as passed from the dependency': {
+			request: {
+				_: ({ dependencies }) => ({
+					params: {
+						uid: dependencies.auth.uid,
+					},
+				}),
 			},
 			onResponse: response =>
 				response
-					.matchProp([ 'args', 'name' ], 'Waluigi')
-		}),
+					.matchProp([ 'args', 'uid' ], uid)
+		},
 	},
 };

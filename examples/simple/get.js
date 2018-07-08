@@ -1,20 +1,26 @@
 
 module.exports = {
 	label: 'Httpbin Get call',
-	url: 'http://httpbin.org/get',
-	method: 'get',
+	request: {
+		url: 'http://httpbin.org/get',
+		method: 'get',
+	},
 	tests: {
 		'should have name set to Waluigi': {
-			params: {
-				name: 'Waluigi',
+			request: {
+				params: {
+					name: 'Waluigi',
+				},
 			},
 			onResponse: response =>
 				response
 					.matchProp([ 'args', 'name' ], 'Waluigi')
 		},
 		'should have custom header set to Yep': {
-			headers: {
-				'X-Hello-World': 'Yep',
+			request: {
+				headers: {
+					'X-Hello-World': 'Yep',
+				},
 			},
 			onResponse: response =>
 				response
