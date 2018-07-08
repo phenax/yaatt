@@ -3,7 +3,8 @@
 import { pick, compose, prop, evolve, mergeDeepRight} from 'ramda';
 import Future from 'fluture';
 
-import { toParams, mapFutureAsync, request, tryF, mapToList, createClass, listToMap, constant } from './utils';
+import { toParams, mapFutureAsync, request, tryF, mapToList, listToMap, constant } from './utils';
+import { createClass } from './utils/create-class';
 import Response from './Response';
 import { log } from './logger';
 
@@ -11,6 +12,12 @@ const callDependency = ({ key, value }: Object): Future =>
 	Request(value)
 		.execute()
 		.map(dependency => ({ key, value: dependency }));
+
+const executeDependencies = compose(
+	mapFutureAsync(callDependency),
+	mapToList,
+	prop('dependencies'),
+);
 
 const normalize = evolve({
 	request: {
@@ -24,7 +31,7 @@ const defaultProps = {
 		params: {},
 		data: {},
 		label: '',
-		_: constant({}),
+		_: constant({}), // Partial request
 	},
 	dependencies: {},
 	onResponse: res => res.get([]),
@@ -46,31 +53,27 @@ const Request = createClass({
 	handleResponse: req => (...args) => req.onResponse(...args),
 
 	execute: req => (): Future =>
-		req.executeDependencies()
+		executeDependencies(req)
 			.map(listToMap)
 			.map(dependencies => ({ request: req, dependencies }))
 			.map(compose(
 				normalize,
 				applyDefaults,
-				req.getDynamicOptions,
+				req.getPartialRequest,
 			))
-			.chain(compose(
-				request,
-				prop('request'),
-				mergeDeepRight(req),
-			))
+			.chain(req.fetchRequest)
 			.map(Response)
 			.chain(tryF(req.handleResponse)),
 
-	getDynamicOptions: req => (...args) => ({
+	fetchRequest: req => compose(
+		request,
+		prop('request'),
+		mergeDeepRight(req),
+	),
+
+	getPartialRequest: req => (...args) => ({
 		request: req.request._(...args),
 	}),
-
-	executeDependencies: req => (): Future => compose(
-		mapFutureAsync(callDependency),
-		mapToList,
-		prop('dependencies'),
-	)(req),
 });
 
 export default Request;

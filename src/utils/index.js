@@ -1,7 +1,7 @@
 // @flow
 
 import { parse } from 'querystring';
-import { curry, identity, compose } from 'ramda';
+import { curry } from 'ramda';
 import axios from 'axios';
 import Future from 'fluture';
 
@@ -72,35 +72,3 @@ export const mapToList = (objectMap: Object): Array<Pair> =>
 
 export const listToMap = (list: Array<Pair>) =>
 	(list || []).reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {});
-
-
-export const initializeClassMethods = curry((methods: Object, obj: Object) => {
-	obj.__methods = methods;
-	Object.keys(methods).forEach(name =>
-		obj[name] = methods[name](obj));
-	return obj;
-});
-
-const attachUtility = (constructor, methods) => Factory => {
-	Factory.constructor = constructor;
-	Factory.methods = methods;
-	Factory.extend = ({ constructor: childConstructor, ...childMethods }) => 
-		createClass({
-			constructor: compose(
-				childConstructor,
-				Factory.constructor,
-			),
-			...Factory.methods,
-			...childMethods,
-		});
-	return Factory;
-};
-
-export const createClass =
-	({ constructor = identity, ...methods }: Object) =>
-		attachUtility(constructor, methods)(
-			compose(
-				initializeClassMethods(methods),
-				constructor,
-			)
-		);
