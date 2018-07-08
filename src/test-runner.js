@@ -7,30 +7,25 @@ import { toTestCases, mapFutureSync } from './utils';
 import Request from './Request';
 import { logTestSuite, logTestCase } from './logger';
 
-import type { Test, TestSuite } from './types';
+import type { TestCase, TestSuite } from './types';
 
 
-export const runTestCase = (testCase: Test): Future => {
-	const { test, label } = testCase;
-	test.label = label;
-
-	const getTest = (typeof test !== 'function')? (() => test): test;
-
-	// console.log(testCase);
-
+type TestCaseRunner = TestCase => Future;
+export const runTestCase: TestCaseRunner = testCase => {
 	return Request(testCase)
-		.execute(getTest)
+		.execute()
 		.map(resp => {
-			logTestCase(test, true);
+			logTestCase(testCase, true);
 			return resp;
 		})
 		.mapRej(e => {
-			logTestCase(test, false);
+			logTestCase(testCase, false);
 			return e;
 		});
 };
 
-export const runTestSuite: (TestSuite => Future) = compose(
+type TestSuiteRunner = TestSuite => Future;
+export const runTestSuite: TestSuiteRunner = compose(
 	mapFutureSync(runTestCase),
 	toTestCases,
 	logTestSuite,

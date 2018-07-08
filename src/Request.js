@@ -1,81 +1,77 @@
 // @flow
 
-import { pick, compose, prop, evolve, identity , mergeDeepRight} from 'ramda';
+import { pick, compose, prop, evolve, mergeDeepRight} from 'ramda';
 import Future from 'fluture';
 
 import { toParams, mapFutureAsync, request, tryF, mapToList, createClass, listToMap, constant } from './utils';
 import Response from './Response';
+import { log } from './logger';
 
 const callDependency = ({ key, value }: Object): Future =>
-	Request(dependencyToRequest(value))
+	Request(value)
 		.execute()
 		.map(dependency => ({ key, value: dependency }));
 
-const dependencyToRequest = ({ onResponse, params, data, ...dependency }) => ({
-	...dependency,
-	test: { onResponse, params, data },
-});
-
 const normalize = evolve({
-	test: {
+	request: {
 		data: toParams,
 		params: toParams,
 	}
 });
 
 const defaultProps = {
-	test: {
-		onResponse: res => res.get([]),
+	request: {
 		params: {},
 		data: {},
 		label: '',
+		_: constant({}),
 	},
+	dependencies: {},
+	onResponse: res => res.get([]),
 };
+
+const applyDefaults = mergeDeepRight(defaultProps);
 
 const Request = createClass({
 	constructor: compose(
 		normalize,
-		mergeDeepRight(defaultProps),
+		applyDefaults,
 		pick([
-			'url',
-			'method',
-			'headers',
-			'test',
+			'request',
 			'dependencies',
+			'onResponse',
 		]),
 	),
 
-	onResponse: self => (...args) => self.test.onResponse(...args),
+	handleResponse: req => (...args) => req.onResponse(...args),
 
-	execute: self => (getOptions: any => any) =>
-		self.executeDependencies()
+	execute: req => () =>
+		req.executeDependencies()
 			.map(listToMap)
-			.map(dependencies => ({ request: self, dependencies }))
+			.map(dependencies => ({ request: req, dependencies }))
 			.chain(compose(
 				request,
-				self.toRequest,
-				self.merge,
-				normalize,
-				mergeDeepRight(defaultProps),
-				test => ({ test }),
-				getOptions || constant({}),
+				// log('Hello'),
+				prop('request'),
+				constant(req),
+				// req.merge,
+				// normalize,
+				// applyDefaults,
+				// request => ({ request }),
+				// req.getDynamicOptions,
 			))
 			.map(Response)
-			.chain(tryF(self.onResponse)),
+			.chain(tryF(req.handleResponse)),
 
-	merge: self => obj => Object.assign(self, obj),
+	merge: req => obj => Object.assign(req, obj),
 
-	toRequest: () => ({ url, method, test }) => ({
-		url,
-		method,
-		...test,
-	}),
+	getDynamicOptions: req => (...args) => req.request._(...args),
 
-	executeDependencies: self => () => compose(
+	executeDependencies: req => () => compose(
 		mapFutureAsync(callDependency),
 		mapToList,
 		prop('dependencies'),
-	)(self),
+	)(req),
 });
 
 export default Request;

@@ -29,14 +29,13 @@ describe('utils', () => {
 
 			const params = { name: 'wow' };
 
-			expect(toParams(params)).toEqual({ name: 'wow' });
+			expect(toParams(params)).toEqual(params);
 		});
 
 		it('should return empty object if given undefined', () => {
-			expect(toParams(undefined)).toBeUndefined();
-			expect(toParams(null)).toBeUndefined();
-			expect(toParams('')).toBeUndefined();
-			expect(toParams()).toBeUndefined();
+			expect(toParams(undefined)).toEqual({});
+			expect(toParams(null)).toEqual({});
+			expect(toParams('')).toEqual({});
 		});
 
 		it('should return parsed params if given a query string', () => {

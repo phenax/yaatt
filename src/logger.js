@@ -14,7 +14,7 @@ export const konsole = {
 		}
 	},
 	error() {},
-	mock({ log }: Object): (() => any) {
+	mock({ log }: Object): Function {
 		const oldLog = konsole.log;
 		konsole.log = log;
 		return () => {
@@ -24,7 +24,7 @@ export const konsole = {
 };
 
 export const logTestSuite = (testSuite: TestSuite) => {
-	const { url, method, label } = testSuite;
+	const { request: { url, method }, label } = testSuite;
 
 	konsole.log();
 	konsole.log(chalk.bold(label));
@@ -37,7 +37,7 @@ export const logTestSuite = (testSuite: TestSuite) => {
 };
 
 export const logTestCase = (testCase: TestCase, passed: bool = false) => {
-	const { label } = testCase;
+	const { label = '' } = testCase;
 
 	if(passed) {
 		konsole.log(chalk.green('   -', label));
@@ -61,10 +61,10 @@ export const logError = (e: Error) => {
 };
 
 export const log = (label: string) => (data: any): any => {
-	konsole.log(
+	console.log(
 		chalk.blue.bold(
 			'>> ',
-			(new Date()).toString(),
+			// (new Date()).toString(),
 			label,
 			':',
 		),

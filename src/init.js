@@ -5,20 +5,24 @@ import { flatten, map, compose } from 'ramda';
 import yargs from 'yargs';
 
 import { runTestSuite } from '../src/test-runner';
-import { mapFutureSync } from '../src/utils';
+import { mapFutureSync, throwError } from '../src/utils';
 import { logError, logNewLine } from '../src/logger';
 
+// TODO: Use Joi to validate arguments
+// TODO: Have more config passed via arguments
 const validateArgs = suitePaths => {
 	if(!suitePaths.length) {
-		throw new Error('Need to specify path to test suite');
+		return throwError('Need to specify path to test suite');
 	}
 
 	return suitePaths;
 };
 
+const importTestCase = require;
+
 const initTests = compose(
 	mapFutureSync(runTestSuite),
-	map(require),
+	map(importTestCase),
 	map(path.resolve),
 	flatten,
 	map(glob.sync),

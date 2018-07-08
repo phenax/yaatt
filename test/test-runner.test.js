@@ -16,7 +16,6 @@ describe('Test running', () => {
 	});
 
 	afterEach(() => {
-		// konsole.isEnabled = true;
 		resetKonsole && resetKonsole();
 		request.mock = null;
 	});
@@ -27,23 +26,23 @@ describe('Test running', () => {
 		it('should make an http request to the correct url with the right options', done => {
 
 			const testCase = {
-				url: '/stuff',
-				method: 'get',
-				test: {
+				request: {
+					url: '/stuff',
+					method: 'get',
 					params: {
 						a: 'b',
 					},
-					onResponse: resp => resp.get([]),
 				},
+				onResponse: resp => resp.get([]),
 			};
 
 			runTestCase(testCase)
 				.fork(
 					done,
-					({ url, method, params }) => {
-						expect(url).toBe(testCase.url);
-						expect(method).toBe(testCase.method);
-						expect(params).toEqual(testCase.test.params);
+					resp => {
+						expect(resp.url).toBe(testCase.request.url);
+						expect(resp.method).toBe(testCase.request.method);
+						expect(resp.params).toEqual(testCase.request.params);
 						done();
 					}
 				);
@@ -54,13 +53,13 @@ describe('Test running', () => {
 			const parsedData = { foo: 'baar', wow: 'ocools' };
 
 			const testCase = {
-				url: '/stuff',
-				method: 'get',
-				test: {
+				request: {
+					url: '/stuff',
+					method: 'get',
 					params: 'foo=baar&wow=ocools',
 					data: 'foo=baar&wow=ocools',
-					onResponse: resp => resp.get([]),
 				},
+				onResponse: resp => resp.get([]),
 			};
 
 			runTestCase(testCase)
@@ -80,13 +79,12 @@ describe('Test running', () => {
 			const params = 'abc=cde';
 
 			const testCase = {
-				url: '/stuff',
-				method: 'get',
-				test: () => ({
+				request: {
 					url,
 					params,
-					onResponse: resp => resp.get([]),
-				}),
+					// _: () => ({ params }),
+				},
+				onResponse: resp => resp.get([]),
 			};
 
 			runTestCase(testCase)
@@ -110,8 +108,10 @@ describe('Test running', () => {
 
 			const testSuite = {
 				label: 'Httpbin Get call',
-				url: 'http://httpbin.org/get',
-				method: 'get',
+				request: {
+					url: 'http://httpbin.org/get',
+					method: 'get',
+				},
 				tests: {},
 			};
 
@@ -132,8 +132,10 @@ describe('Test running', () => {
 
 			const testSuite = {
 				label: 'Httpbin Get call',
-				url: '/get',
-				method: 'get',
+				request: {
+					url: '/get',
+					method: 'get',
+				},
 				tests: {
 					'should do stuff 1': { onResponse },
 					'should do stuff 2': { onResponse },
