@@ -2,6 +2,8 @@
 # Yet another api testing toolkit
 Easy tests and documentation for your http api
 
+[In development]
+
 ## Install
 
 Add it globally or locally
