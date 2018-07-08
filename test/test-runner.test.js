@@ -113,7 +113,7 @@ describe('Test running', () => {
 			resetKonsole = konsole.mock({ log: logMock });
 
 			const testSuite = {
-				label: 'Httpbin Get call',
+				label: '_',
 				request: {
 					url: 'http://httpbin.org/get',
 					method: 'get',
@@ -137,7 +137,7 @@ describe('Test running', () => {
 			const onResponse = jest.fn(() => ({}));
 
 			const testSuite = {
-				label: 'Httpbin Get call',
+				label: '_',
 				request: {
 					url: '/get',
 					method: 'get',
@@ -164,7 +164,7 @@ describe('Test running', () => {
 			const testToken = '235tv3wervwegr';
 
 			const testSuite = {
-				label: 'Httpbin Get call',
+				label: '_',
 				request: {
 					url: '/get',
 					method: 'get',
@@ -186,6 +186,50 @@ describe('Test running', () => {
 								expect(dependencies.auth.token).toBe(testToken);
 								done();
 							},
+						},
+					},
+				},
+			};
+
+			runTestSuite(testSuite)
+				.fork(
+					e => done(`Future failed :: ${e}`),
+					() => {},
+				);
+		});
+
+		it('should merge request with stuff from dependency', done => {
+
+			const testToken = '235tv3wervwegr';
+
+			const testSuite = {
+				label: '_',
+				request: {
+					url: '/get',
+					method: 'get',
+				},
+				dependencies: {
+					auth: {
+						request: {
+							url: '/user/login',
+							method: 'post',
+							data: { uid: 'hello_world' },
+						},
+						onResponse: () => ({ token: testToken }),
+					},
+				},
+				tests: {
+					'should do stuff': {
+						request: {
+							_: ({ dependencies }) => ({
+								params: {
+									uid: dependencies.auth.token
+								}
+							}),
+						},
+						onResponse: ({ data }) => {
+							expect(data.params.uid).toBe(testToken);
+							done();
 						},
 					},
 				},
