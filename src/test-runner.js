@@ -4,11 +4,11 @@ import { compose } from 'ramda';
 import Future from 'fluture';
 
 import { toTestCases, mapFutureSync } from './utils';
+import { validateTestSuite } from './utils/validation';
 import Request from './Request';
 import { logTestSuite, logTestCase } from './logger';
 
 import type { TestCase, TestSuite } from './types';
-
 
 type TestCaseRunner = TestCase => Future;
 export const runTestCase: TestCaseRunner = testCase => {
@@ -29,4 +29,5 @@ export const runTestSuite: TestSuiteRunner = compose(
 	mapFutureSync(runTestCase),
 	toTestCases,
 	logTestSuite,
+	validateTestSuite,
 );

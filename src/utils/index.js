@@ -5,10 +5,10 @@ import { curry, identity, compose } from 'ramda';
 import axios from 'axios';
 import Future from 'fluture';
 
-import type { QueryParams, TestError, TestSuite, TestCase, RequestOptions, MapFutureFunction, Pair } from './types';
+import type { QueryParams, TestError, TestSuite, TestCase, RequestOptions, MapFutureFunction, Pair } from '../types';
 
 type ThrowErrorOptions = { future: bool, promise: bool };
-export const throwError = (e: TestError = 'Unknown Error', options: ThrowErrorOptions) => {
+export const throwError = (e: TestError = 'Unknown Error', options?: ThrowErrorOptions) => {
 	const error = (e instanceof Error)? e: new Error(e);
 	const { future, promise } = options || {};
 
