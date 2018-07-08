@@ -61,6 +61,46 @@ module.exports = {
 };
 ```
 
+### Define dependencies
+* If your api call depends on another api call (for example user authentication), you can define dependencies in your test suite which will be called to provide data to your test cases.
+```js
+module.exports = {
+	label: 'Http get call after authentication (dependency)',
+	request: {
+		url: 'https://some-domain.com/api/user',
+		method: 'get',
+	},
+	dependencies: {
+		auth: {
+			request: {
+				url: 'https://some-domain.com/api/user/login',
+				method: 'post',
+				data: {
+                    email: 'akshaynair1597@gmail.com',
+                    password: 'my_pass1298qwbtgdhsj',
+                },
+			},
+			onResponse: r => r.get([ 'user' ]),
+		}
+	},
+	tests: {
+		'should have uid set correctly as passed from the dependency': {
+			request: {
+				_: ({ dependencies }) => ({
+					params: {
+						uid: dependencies.auth.uid,
+					},
+				}),
+			},
+			onResponse: response =>
+				response
+					.matchProp([ 'user', 'name' ], 'Akshay Nair')
+		},
+	},
+};
+```
+
+
 ### Running your tests
 
 ```
