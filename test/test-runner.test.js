@@ -101,86 +101,87 @@ describe('Test running', () => {
 		});
 	});
 
-	// describe('runTestSuite', () => {
+	describe('runTestSuite', () => {
 
-	// 	it('should log test suite details to console', done => {
+		it('should log test suite details to console', done => {
 
-	// 		const logMock = jest.fn();
-	// 		resetKonsole = konsole.mock({ log: logMock });
+			const logMock = jest.fn();
+			resetKonsole = konsole.mock({ log: logMock });
 
-	// 		const testSuite = {
-	// 			label: 'Httpbin Get call',
-	// 			url: 'http://httpbin.org/get',
-	// 			method: 'get',
-	// 			tests: {},
-	// 		};
+			const testSuite = {
+				label: 'Httpbin Get call',
+				url: 'http://httpbin.org/get',
+				method: 'get',
+				tests: {},
+			};
 
-	// 		runTestSuite(testSuite)
-	// 			.fork(
-	// 				e => done(`Future failed :: ${e}`),
-	// 				() => {
-	// 					expect(logMock).toBeCalled();
-	// 					expect(logMock.mock.calls[1][0]).toContain(testSuite.label);
-	// 					done();
-	// 				},
-	// 			);
-	// 	});
+			runTestSuite(testSuite)
+				.fork(
+					e => done(`Future failed :: ${e}`),
+					() => {
+						expect(logMock).toBeCalled();
+						expect(logMock.mock.calls[1][0]).toContain(testSuite.label);
+						done();
+					},
+				);
+		});
 
-	// 	it('should run all test cases inside testSuite', done => {
+		it('should run all test cases inside testSuite', done => {
 
-	// 		const onResponse = jest.fn(() => ({}));
+			const onResponse = jest.fn(() => ({}));
 
-	// 		const testSuite = {
-	// 			label: 'Httpbin Get call',
-	// 			url: '/get',
-	// 			method: 'get',
-	// 			tests: {
-	// 				'should do stuff 1': { onResponse },
-	// 				'should do stuff 2': { onResponse },
-	// 				'should do stuff 3': { onResponse },
-	// 			},
-	// 		};
+			const testSuite = {
+				label: 'Httpbin Get call',
+				url: '/get',
+				method: 'get',
+				tests: {
+					'should do stuff 1': { onResponse },
+					'should do stuff 2': { onResponse },
+					'should do stuff 3': { onResponse },
+				},
+			};
 
-	// 		runTestSuite(testSuite)
-	// 			.fork(
-	// 				e => done(`Future failed :: ${e}`),
-	// 				() => {
-	// 					expect(onResponse).toHaveBeenCalledTimes(3);
-	// 					done();
-	// 				},
-	// 			);
-	// 	});
+			runTestSuite(testSuite)
+				.fork(
+					e => done(`Future failed :: ${e}`),
+					() => {
+						expect(onResponse).toHaveBeenCalledTimes(3);
+						done();
+					},
+				);
+		});
 
-	// 	it('should run auth dependency and call case ith the dependency', done => {
+		// it('should run auth dependency and call case ith the dependency', done => {
 
-	// 		const testUid = '235tv3wervwegr';
+		// 	const testToken = '235tv3wervwegr';
 
-	// 		const testSuite = {
-	// 			label: 'Httpbin Get call',
-	// 			url: '/get',
-	// 			method: 'get',
-	// 			dependencies: {
-	// 				auth: {
-	// 					url: 'http://httpbin.org/post',
-	// 					method: 'post',
-	// 					data: { uid: 'hello_world' },
-	// 					onResponse: () => ({ uid: testUid }),
-	// 				},
-	// 			},
-	// 			tests: {
-	// 				'should do stuff': ({ dependencies }) => {
-	// 					expect(dependencies.auth.uid).toBe(testUid);
-	// 					done();
-	// 					return { onResponse: () => {} };
-	// 				},
-	// 			},
-	// 		};
+		// 	const testSuite = {
+		// 		label: 'Httpbin Get call',
+		// 		url: '/get',
+		// 		method: 'get',
+		// 		dependencies: {
+		// 			auth: {
+		// 				url: '/user/login',
+		// 				method: 'post',
+		// 				data: { uid: 'hello_world' },
+		// 				onResponse: () => ({ token: testToken }),
+		// 			},
+		// 		},
+		// 		tests: {
+		// 			'should do stuff': ({ dependencies }) => {
+		// 				// console.log({dependencies});
+		// 				expect(dependencies.auth.token).toBe(testToken);
+		// 				done();
+		// 				return { onResponse: () => {} };
+		// 			},
+		// 		},
+		// 	};
 
-	// 		runTestSuite(testSuite)
-	// 			.fork(
-	// 				e => done(`Future failed :: ${e}`),
-	// 				() => {},
-	// 			);
-	// 	});
-	// });
+		// 	runTestSuite(testSuite)
+		// 		.fork(
+		// 			e => done(`Future failed :: ${e}`),
+		// 			() => {},
+		// 		);
+		// });
+	});
 });

@@ -4,10 +4,11 @@ import { pick, path as propPath, compose } from 'ramda';
 import Joi from 'joi';
 
 import { createClass, throwError } from './utils';
+import { log } from './logger';
 
-import type { ServerResponse, ResponseClass } from './types';
+import type { ServerResponse } from './types';
 
-const Response: ResponseClass = createClass({
+const Response = createClass({
 	constructor: compose(
 		pick([
 			'data',
@@ -15,27 +16,27 @@ const Response: ResponseClass = createClass({
 			'headers',
 		]),
 	),
-	matchProp: self => (keys: Array<string>, value: any) => {
-		const fieldValue = self.get(keys);
+	matchProp: response => (keys: Array<string>, value: any) => {
+		const fieldValue = response.get(keys);
 		return fieldValue === value
-			? self
+			? response
 			: throwError(`Property "${keys.join('.')}" of the response was "${fieldValue}", expected "${value}"`);
 	},
-	matchHeader: self => (key: string, value: string) => {
-		const headerValue = self.headers[key];
+	matchHeader: response => (key: string, value: string) => {
+		const headerValue = response.headers[key];
 		return headerValue === value
-			? self
+			? response
 			: throwError(`Header "${key}" of the response was "${headerValue}", expected "${value}"`);
 	},
-	get: self => (keys: Array<string>) => propPath(keys, self.data),
-	matchSchema: self => (schema: Joi) => {
-		const { error } = Joi.validate(self.data, schema);
+	get: response => (keys: Array<string>) => propPath(keys, response.data),
+	matchSchema: response => (schema: Joi) => {
+		const { error } = Joi.validate(response.data, schema);
 		error && throwError(error);
-		return self;
+		return response;
 	},
-	assert: self => (fn: (ServerResponse, Object) => any) => {
-		fn(self, { throwError });
-		return self;
+	assert: response => (fn: (ServerResponse, Object) => any) => {
+		fn(response, { throwError });
+		return response;
 	},
 });
 
