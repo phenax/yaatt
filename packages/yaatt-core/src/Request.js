@@ -3,7 +3,7 @@
 import { pick, compose, prop, evolve, mergeDeepRight, map, chain } from 'ramda';
 import Future from 'fluture';
 
-import { toParams, mapFutureAsync, request, tryF, mapToList, listToMap, constant, createClass, validateRequest, log } from '@yaatt/utils';
+import { toParams, mapFutureAsync, request, tryF, mapToList, listToMap, constant, createClass, validateRequest } from '@yaatt/utils';
 import { Response } from './Response';
 
 const callDependency = ({ key, value }: Object): Future =>
@@ -70,7 +70,6 @@ const Request = createClass({
 
 	fetchRequest: () => compose(
 		request,
-		log('Request'),
 		prop('request'),
 	),
 

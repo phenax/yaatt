@@ -8,12 +8,18 @@
   "author": "Akshay Nair <phenax5@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest ./test"
+    "build": "lerna run build --parallel --stream",
+    "build:watch": "lerna run build --parallel --stream -- --watch",
+    "test": "lerna run test --parallel --stream"
   },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.51",
+    "@babel/cli": "^7.0.0-beta.51",
+    "@babel/preset-env": "^7.0.0-beta.51",
+    "@babel/preset-flow": "^7.0.0-beta.51",
     "babel-core": "^7.0.0-0",
     "babel-eslint": "^8.2.5",
     "babel-jest": "^23.0.1",
@@ -27,5 +33,11 @@
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     }
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-flow"
+    ]
   }
 }

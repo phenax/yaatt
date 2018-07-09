@@ -8,7 +8,6 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src -d dist --copy-files",
-    "build:watch": "npm run build -- --watch",
     "test": "jest ./test"
   },
   "dependencies": {
@@ -17,12 +16,6 @@
     "fluture": "^8.0.2",
     "joi": "^13.4.0",
     "ramda": "^0.25.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.51",
-    "@babel/core": "^7.0.0-beta.51",
-    "@babel/preset-env": "^7.0.0-beta.51",
-    "@babel/preset-flow": "^7.0.0-beta.51"
   },
   "babel": {
     "presets": [
