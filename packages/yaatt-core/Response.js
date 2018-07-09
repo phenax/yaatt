@@ -3,9 +3,7 @@
 import { pick, path as propPath, compose } from 'ramda';
 import Joi from 'joi';
 
-import { throwError } from './utils';
-import { createClass } from './utils/create-class';
-import { log } from './utils/logger';
+import { throwError, createClass } from '@yaatt/utils';
 
 import type { ServerResponse } from './types';
 

@@ -3,10 +3,8 @@
 import { compose } from 'ramda';
 import Future from 'fluture';
 
-import { toTestCases, mapFutureSync } from './utils';
-import { validateTestSuite } from './utils/validation';
+import { toTestCases, mapFutureSync, validateTestSuite, logTestSuite, logTestCase } from '@yaatt/utils';
 import Request from './Request';
-import { logTestSuite, logTestCase } from './utils/logger';
 
 import type { TestCase, TestSuite } from './types';
 

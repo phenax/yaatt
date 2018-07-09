@@ -1,9 +1,31 @@
 {
   "name": "@yaatt/utils",
   "version": "0.0.0",
-  "description": "Utility functions",
+  "description": "Generic utility functions",
   "main": "index.js",
-  "repository": "__",
+  "repository": "https://github.com/phenax/yaatt",
   "author": "Akshay Nair<phenax5@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src -d dist --copy-files",
+    "test": "jest ./test"
+  },
+  "dependencies": {
+    "ramda": "^0.25.0",
+    "joi": "^13.4.0",
+    "chalk": "^2.4.1",
+    "fluture": "^8.0.2",
+    "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "jest": "^23.1.0",
+    "babel-jest": "^23.0.1",
+    "babel-core": "^7.0.0-0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
+  }
 }

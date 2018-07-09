@@ -7,9 +7,6 @@
   "repository": "https://github.com/phenax/yaatt",
   "author": "Akshay Nair <phenax5@gmail.com>",
   "license": "MIT",
-  "bin": {
-    "yaatt": "./bin/yaatt.js"
-  },
   "scripts": {
     "test": "jest ./test"
   },

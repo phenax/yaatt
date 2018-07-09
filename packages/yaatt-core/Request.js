@@ -3,11 +3,8 @@
 import { pick, compose, prop, evolve, mergeDeepRight, map, chain } from 'ramda';
 import Future from 'fluture';
 
-import { toParams, mapFutureAsync, request, tryF, mapToList, listToMap, constant } from './utils';
-import { createClass } from './utils/create-class';
-import { validateRequest } from './utils/validation';
+import { toParams, mapFutureAsync, request, tryF, mapToList, listToMap, constant, createClass, validateRequest } from '@yaatt/utils';
 import Response from './Response';
-import { log } from './utils/logger';
 
 const callDependency = ({ key, value }: Object): Future =>
 	Request(value)

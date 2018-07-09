@@ -1,7 +1,7 @@
 import {identity} from 'ramda';
 
-import Request from '../src/Request';
-import { request } from '../src/utils';
+import Request from '../Request';
+import { request } from '@yaatt/utils';
 
 describe('Request', () => {
 

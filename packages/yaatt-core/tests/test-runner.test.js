@@ -1,9 +1,9 @@
 
 // import Future from 'fluture';
 
-import { runTestCase, runTestSuite } from '../src/test-runner';
-import { konsole } from '../src/utils/logger';
-import { request } from '../src/utils';
+import { runTestCase, runTestSuite } from '../test-runner';
+import { konsole } from '@yaatt/utils/logger';
+import { request } from '@yaatt/utils';
 
 describe('Test running', () => {
 
