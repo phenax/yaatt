@@ -1,0 +1,9 @@
+{
+  "name": "@yaatt/core",
+  "version": "0.0.0",
+  "description": "Core helpers to programatically run api tests",
+  "main": "index.js",
+  "repository": "__",
+  "author": "Akshay Nair<phenax5@gmail.com>",
+  "license": "MIT"
+}

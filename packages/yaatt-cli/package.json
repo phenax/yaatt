@@ -1,0 +1,9 @@
+{
+  "name": "@yaatt/cli",
+  "version": "0.0.0",
+  "description": "A cli tool to write api tests and documentation",
+  "main": "index.js",
+  "repository": "__",
+  "author": "Akshay Nair<phenax5@gmail.com>",
+  "license": "MIT"
+}
