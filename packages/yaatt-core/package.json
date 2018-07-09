@@ -1,6 +1,6 @@
 {
   "name": "@yaatt/core",
-  "version": "0.0.0",
+  "version": "0.0.1-test.3",
   "description": "Core helpers to programatically run api tests",
   "main": "dist/index.js",
   "repository": "https://github.com/phenax/yaatt",
@@ -11,12 +11,12 @@
     "test": "jest ./test"
   },
   "dependencies": {
-    "ramda": "^0.25.0",
-    "joi": "^13.4.0",
+    "@yaatt/utils": "^0.0.1-test.3",
+    "axios": "^0.18.0",
     "chalk": "^2.4.1",
     "fluture": "^8.0.2",
-    "axios": "^0.18.0",
-    "@yaatt/utils": "^0.0.0"
+    "joi": "^13.4.0",
+    "ramda": "^0.25.0"
   },
   "babel": {
     "presets": [
