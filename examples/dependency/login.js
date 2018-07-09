@@ -1,6 +1,4 @@
 
-const uid = 'hello_world_ahjdshk8';
-
 module.exports = {
 	label: 'Http get call after authentication (dependency)',
 	request: {
@@ -12,7 +10,7 @@ module.exports = {
 			request: {
 				url: 'http://httpbin.org/post',
 				method: 'post',
-				data: { uid },
+				data: { uid: 'hello_world_ahjdshk8' },
 			},
 			onResponse: r => JSON.parse(r.get([ 'data' ])),
 		}
@@ -28,7 +26,7 @@ module.exports = {
 			},
 			onResponse: response =>
 				response
-					.matchProp([ 'args', 'uid' ], uid)
+					.matchProp([ 'args', 'uid' ], 'hello_world_ahjdshk8')
 		},
 	},
 };
