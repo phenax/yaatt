@@ -2,38 +2,42 @@
   "name": "yaatt",
   "version": "0.0.0-test.1",
   "description": "Yet another api testing toolkit. Easy tests and documentation for your http api",
+  "private": true,
   "main": "index.js",
   "repository": "https://github.com/phenax/yaatt",
   "author": "Akshay Nair <phenax5@gmail.com>",
   "license": "MIT",
-  "bin": {
-    "yaatt": "./bin/yaatt.js"
-  },
   "scripts": {
-    "test": "jest ./test"
+    "build": "lerna run build --parallel --stream",
+    "build:watch": "lerna run build --parallel --stream -- --watch",
+    "test": "lerna run test --parallel --stream"
   },
-  "dependencies": {
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
     "@babel/core": "^7.0.0-beta.51",
+    "@babel/cli": "^7.0.0-beta.51",
     "@babel/preset-env": "^7.0.0-beta.51",
     "@babel/preset-flow": "^7.0.0-beta.51",
-    "@babel/register": "^7.0.0-beta.51",
-    "axios": "^0.18.0",
     "babel-core": "^7.0.0-0",
     "babel-eslint": "^8.2.5",
     "babel-jest": "^23.0.1",
-    "chalk": "^2.4.1",
     "eslint": "^5.0.0",
     "flow-bin": "^0.75.0",
-    "fluture": "^8.0.2",
     "jest": "^23.1.0",
-    "joi": "^13.4.0",
-    "ramda": "^0.25.0",
-    "yargs": "^11.0.0"
+    "lerna": "^2.11.0"
   },
   "jest": {
     "testEnvironment": "node",
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     }
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-flow"
+    ]
   }
 }
