@@ -1,5 +1,5 @@
 
-import { Joi } from '../../';
+const { Joi } = require('@yaatt/core');
 
 const schema = Joi.object().keys({
 	args: { name: 'Waluigi' },

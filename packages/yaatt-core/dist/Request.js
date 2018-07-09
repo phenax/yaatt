@@ -68,7 +68,7 @@ var Request = (0, _utils.createClass)({
     }), (0, _ramda.map)(_utils.listToMap), req.executeDependencies);
   },
   fetchRequest: function fetchRequest() {
-    return (0, _ramda.compose)(_utils.request, (0, _ramda.prop)('request'));
+    return (0, _ramda.compose)(_utils.request, (0, _utils.log)('Request'), (0, _ramda.prop)('request'));
   },
   getPartialRequest: function getPartialRequest(_ref3) {
     var request = _ref3.request;

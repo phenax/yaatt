@@ -8,11 +8,11 @@ module.exports = {
 	dependencies: {
 		auth: {
 			request: {
-				url: 'http://httpbin.org/post',
-				method: 'post',
-				data: { uid: 'hello_world_ahjdshk8' },
+				url: 'http://httpbin.org/get',
+				method: 'get',
+				params: { uid: 'hello_world_ahjdshk8' },
 			},
-			onResponse: r => JSON.parse(r.get([ 'data' ])),
+			onResponse: r => r.get([ 'args' ]),
 		}
 	},
 	tests: {

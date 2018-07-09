@@ -5,9 +5,8 @@ const glob = require('glob');
 const { flatten, map, compose } = require('ramda');
 const yargs = require('yargs');
 
-const { runTestSuite } = require('@yaatt/core/test-runner');
-const { mapFutureSync, throwError } = require('@yaatt/utils');
-const { logError, logNewLine } = require('@yaatt/utils/logger');
+const { runTestSuite } = require('@yaatt/core');
+const { mapFutureSync, throwError, logError, logNewLine } = require('@yaatt/utils');
 
 // TODO: Use Joi to validate arguments
 // TODO: Have more config passed via arguments
