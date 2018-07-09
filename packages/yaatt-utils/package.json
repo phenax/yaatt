@@ -21,11 +21,5 @@
     "jest": "^23.1.0",
     "babel-jest": "^23.0.1",
     "babel-core": "^7.0.0-0"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "transform": {
-      "^.+\\.jsx?$": "babel-jest"
-    }
   }
 }
