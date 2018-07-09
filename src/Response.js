@@ -5,7 +5,7 @@ import Joi from 'joi';
 
 import { throwError } from './utils';
 import { createClass } from './utils/create-class';
-import { log } from './logger';
+import { log } from './utils/logger';
 
 import type { ServerResponse } from './types';
 

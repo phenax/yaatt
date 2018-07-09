@@ -6,7 +6,7 @@ import yargs from 'yargs';
 
 import { runTestSuite } from '../src/test-runner';
 import { mapFutureSync, throwError } from '../src/utils';
-import { logError, logNewLine } from '../src/logger';
+import { logError, logNewLine } from '../src/utils/logger';
 
 // TODO: Use Joi to validate arguments
 // TODO: Have more config passed via arguments

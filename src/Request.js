@@ -6,7 +6,7 @@ import Future from 'fluture';
 import { toParams, mapFutureAsync, request, tryF, mapToList, listToMap, constant } from './utils';
 import { createClass } from './utils/create-class';
 import Response from './Response';
-import { log } from './logger';
+import { log } from './utils/logger';
 
 const callDependency = ({ key, value }: Object): Future =>
 	Request(value)

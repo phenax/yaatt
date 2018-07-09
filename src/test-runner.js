@@ -6,7 +6,7 @@ import Future from 'fluture';
 import { toTestCases, mapFutureSync } from './utils';
 import { validateTestSuite } from './utils/validation';
 import Request from './Request';
-import { logTestSuite, logTestCase } from './logger';
+import { logTestSuite, logTestCase } from './utils/logger';
 
 import type { TestCase, TestSuite } from './types';
 
