@@ -5,7 +5,7 @@ import Joi from 'joi';
 
 import { throwError, createClass } from '@yaatt/utils';
 
-import type { ServerResponse } from './types';
+import type { ServerResponse } from '../types';
 
 const Response = createClass({
 	constructor: compose(
@@ -39,4 +39,4 @@ const Response = createClass({
 	},
 });
 
-export default Response;
+export { Response };

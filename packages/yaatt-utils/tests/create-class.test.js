@@ -1,5 +1,5 @@
 
-import { createClass } from '..';
+import { createClass } from '../src';
 
 const isOdd = x => x % 2;
 

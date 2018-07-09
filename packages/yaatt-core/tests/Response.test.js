@@ -1,5 +1,5 @@
 
-import Response from '../Response';
+import Response from '../src/Response';
 import { Joi } from 'joi';
 
 describe('Response', () => {

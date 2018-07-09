@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-import { throwError } from '../utils';
+import { throwError } from './helpers';
 
 export const Request = Joi.object().keys({
 	url: Joi.string(),

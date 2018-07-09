@@ -4,9 +4,9 @@ import { compose } from 'ramda';
 import Future from 'fluture';
 
 import { toTestCases, mapFutureSync, validateTestSuite, logTestSuite, logTestCase } from '@yaatt/utils';
-import Request from './Request';
+import { Request } from './Request';
 
-import type { TestCase, TestSuite } from './types';
+import type { TestCase, TestSuite } from '../types';
 
 type TestCaseRunner = TestCase => Future;
 export const runTestCase: TestCaseRunner = testCase => {
