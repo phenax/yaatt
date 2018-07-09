@@ -1,6 +1,6 @@
 
-import Response from '../src/Response';
-import { Joi } from 'joi';
+import {Response} from '../src/Response';
+import Joi from 'joi';
 
 describe('Response', () => {
 

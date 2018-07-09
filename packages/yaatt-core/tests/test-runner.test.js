@@ -2,8 +2,7 @@
 // import Future from 'fluture';
 
 import { runTestCase, runTestSuite } from '../src/test-runner';
-import { konsole } from '@yaatt/utils/logger';
-import { request } from '@yaatt/utils';
+import { request, konsole } from '@yaatt/utils';
 
 describe('Test running', () => {
 
