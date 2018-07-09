@@ -4,7 +4,7 @@
 import chalk from 'chalk';
 import { toUpper } from 'ramda';
 
-import type { TestSuite, TestCase } from '@yaatt/core/types';
+import type { TestSuite, TestCase } from '@yaatt/core/dist/types';
 
 export const konsole = {
 	isEnabled: true,
