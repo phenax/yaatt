@@ -5,6 +5,7 @@ import Future from 'fluture';
 
 import { toParams, mapFutureAsync, request, tryF, mapToList, listToMap, constant } from './utils';
 import { createClass } from './utils/create-class';
+import { validateRequest } from './utils/validation';
 import Response from './Response';
 import { log } from './utils/logger';
 
@@ -13,18 +14,14 @@ const callDependency = ({ key, value }: Object): Future =>
 		.execute()
 		.map(dependency => ({ key, value: dependency }));
 
-const normalize = evolve({
-	request: {
-		data: toParams,
-		params: toParams,
-	}
-});
 
 const defaultProps = {
+	label: '',
+	description: '',
 	request: {
+		method: 'get',
 		params: {},
 		data: {},
-		label: '',
 		_: constant({}), // Partial request
 	},
 	dependencies: {},
@@ -32,12 +29,21 @@ const defaultProps = {
 };
 
 const applyDefaults = mergeDeepRight(defaultProps);
+const normalize = evolve({
+	request: {
+		data: toParams,
+		params: toParams,
+	}
+});
+
 
 const Request = createClass({
 	constructor: compose(
+		validateRequest,
 		normalize,
 		applyDefaults,
 		pick([
+			'label',
 			'request',
 			'dependencies',
 			'onResponse',
