@@ -1,5 +1,5 @@
 
-import { throwError, toParams } from '../src/utils';
+import { throwError, toParams } from '../../src/utils';
 
 describe('utils', () => {
 
