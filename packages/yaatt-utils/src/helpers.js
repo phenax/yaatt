@@ -5,7 +5,7 @@ import { curry } from 'ramda';
 import axios from 'axios';
 import Future from 'fluture';
 
-import type { QueryParams, TestError, TestSuite, TestCase, RequestOptions, MapFutureFunction, Pair } from '@yaatt/core/dist/types';
+import type { QueryParams, TestError, TestSuite, TestCase, RequestOptions, MapFutureFunction, Pair } from '@yaatt/core/src/types';
 
 type ThrowErrorOptions = { future: bool, promise: bool };
 export const throwError = (e: TestError = 'Unknown Error', options?: ThrowErrorOptions) => {

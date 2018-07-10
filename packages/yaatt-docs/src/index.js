@@ -1,0 +1,2 @@
+
+export * from './docs-generator';
