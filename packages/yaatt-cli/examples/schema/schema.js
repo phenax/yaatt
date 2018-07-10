@@ -1,5 +1,5 @@
 
-const { Joi } = require('@yaatt/core');
+const { Joi } = require('@yaatt/utils');
 
 const schema = Joi.object().keys({
 	args: { name: 'Waluigi' },

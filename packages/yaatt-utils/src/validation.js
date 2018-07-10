@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import {Joi} from '@yaatt/utils';
 
 import { throwError } from './helpers';
 

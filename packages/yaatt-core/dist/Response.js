@@ -7,11 +7,7 @@ exports.Response = void 0;
 
 var _ramda = require("ramda");
 
-var _joi = _interopRequireDefault(require("joi"));
-
 var _utils = require("@yaatt/utils");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Response = (0, _utils.createClass)({
   constructor: (0, _ramda.compose)((0, _ramda.pick)(['data', 'status', 'headers'])),
@@ -34,7 +30,7 @@ var Response = (0, _utils.createClass)({
   },
   matchSchema: function matchSchema(response) {
     return function (schema) {
-      var _Joi$validate = _joi.default.validate(response.data, schema),
+      var _Joi$validate = _utils.Joi.validate(response.data, schema),
           error = _Joi$validate.error;
 
       error && (0, _utils.throwError)(error);

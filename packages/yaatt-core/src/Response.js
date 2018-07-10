@@ -1,7 +1,7 @@
 //@flow
 
 import { pick, path as propPath, compose } from 'ramda';
-import Joi from 'joi';
+import {Joi} from '@yaatt/utils';
 
 import { throwError, createClass } from '@yaatt/utils';
 
