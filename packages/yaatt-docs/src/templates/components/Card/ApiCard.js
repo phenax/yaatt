@@ -6,7 +6,7 @@ import { apiCard } from './styles';
 export const ApiCardSmall = ({ api: { url, method, name } }) => (
 	<div style={apiCard.small.host}>
 		<div style={apiCard.small.title}>
-			<span style={apiCard.small.title__method}>{method}</span>
+			<span style={apiCard.small.title__method}>{`${method} `}</span>
 			<span style={apiCard.small.title__url}>{url}</span>
 		</div>
 		<div style={apiCard.small.subtitle}>{name}</div>

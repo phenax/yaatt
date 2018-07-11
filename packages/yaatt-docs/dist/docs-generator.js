@@ -3,7 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.renderTestSuite = exports.renderDocs = exports.toDocsFormat = void 0;
+exports.saveHtmlDocument = exports.renderTestSuites = exports.renderApiDocs = exports.toDocsFormat = void 0;
+
+var _fs = _interopRequireDefault(require("fs"));
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -50,12 +52,20 @@ var toDocsFormat = function toDocsFormat(testSuite) {
 
 exports.toDocsFormat = toDocsFormat;
 
-var renderDocs = function renderDocs(apiDocs) {
+var renderApiDocs = function renderApiDocs(apiDocs) {
   return (0, _server.renderToString)(_react.default.createElement(_HtmlWrapper.default, null, _react.default.createElement(_templates.default, {
-    docs: [apiDocs]
+    docs: apiDocs
   })));
 };
 
-exports.renderDocs = renderDocs;
-var renderTestSuite = (0, _ramda.compose)(renderDocs, toDocsFormat);
-exports.renderTestSuite = renderTestSuite;
+exports.renderApiDocs = renderApiDocs;
+var renderTestSuites = (0, _ramda.compose)(renderApiDocs, (0, _ramda.map)(toDocsFormat));
+exports.renderTestSuites = renderTestSuites;
+
+var saveHtmlDocument = function saveHtmlDocument(fileName, testSuites) {
+  var htmlStr = renderTestSuites(testSuites);
+
+  _fs.default.writeFileSync(fileName, htmlStr);
+};
+
+exports.saveHtmlDocument = saveHtmlDocument;

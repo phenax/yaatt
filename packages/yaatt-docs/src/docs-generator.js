@@ -1,9 +1,10 @@
 // @flow
 
+import fs from 'fs';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { toTestCases } from '@yaatt/utils';
-import { compose } from 'ramda';
+import { compose, map } from 'ramda';
 
 import type { ApiDocumentation, TestSuite } from '@yaatt/core/src/types';
 
@@ -33,13 +34,17 @@ export const toDocsFormat = (testSuite: TestSuite): ApiDocumentation => {
 	};
 };
 
-export const renderDocs = (apiDocs: ApiDocumentation) =>
+export const renderApiDocs = (apiDocs: Array<ApiDocumentation>) =>
 	renderToString(
 		<HtmlWrapper>
-			<ApiDocsPage docs={[apiDocs]} />
+			<ApiDocsPage docs={apiDocs} />
 		</HtmlWrapper>
 	);
 
-export const renderTestSuite: (TestSuite => string) = compose(renderDocs, toDocsFormat);
+export const renderTestSuites: (Array<TestSuite> => string) =
+	compose(renderApiDocs, map(toDocsFormat));
 
-
+export const saveHtmlDocument = (fileName: string, testSuites: Array<TestSuite>) => {
+	const htmlStr = renderTestSuites(testSuites);
+	fs.writeFileSync(fileName, htmlStr);
+};

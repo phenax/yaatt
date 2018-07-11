@@ -24,7 +24,7 @@ var ApiCardSmall = function ApiCardSmall(_ref) {
     style: _styles.apiCard.small.title
   }, _react.default.createElement("span", {
     style: _styles.apiCard.small.title__method
-  }, method), _react.default.createElement("span", {
+  }, "".concat(method, " ")), _react.default.createElement("span", {
     style: _styles.apiCard.small.title__url
   }, url)), _react.default.createElement("div", {
     style: _styles.apiCard.small.subtitle

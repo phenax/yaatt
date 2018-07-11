@@ -16,6 +16,7 @@
         "sourceType": "module"
     },
     "rules": {
+        "jsx-a11y/href-no-hash": [ 0 ],
         "indent": [
             "error",
             "tab"

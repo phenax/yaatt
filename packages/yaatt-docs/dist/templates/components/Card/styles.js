@@ -17,7 +17,8 @@ var apiCard = {
     },
     title__method: {
       fontWeight: 'bold',
-      color: '#333'
+      color: '#333',
+      textTransform: 'uppercase'
     },
     subtitle: {
       fontSize: '.8em',
