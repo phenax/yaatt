@@ -24,8 +24,8 @@ export const ApiCardBig = ({ api: { url, method, name } }) => (
 );
 
 const ApiCard = ({ api, type }) => cond([
-	[ equals('small'), <ApiCardSmall api={api} /> ],
-	[ equals('big'), <ApiCardBig api={api} /> ],
+	[ equals('small'),   () => <ApiCardSmall api={api} />   ],
+	[ equals('big'),     () => <ApiCardBig api={api} />     ],
 ])(type);
 
 export default ApiCard;
