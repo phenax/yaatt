@@ -1,43 +1,27 @@
 
+import styled from 'styled-components';
 
-export const apiCard = {
-	small: {
-		host: {
-			padding: '.5em',
-		},
-		title: {
-			fontSize: '1.2em',
-		},
-		title__url: {
-			color: '#555',
-		},
-		title__method: {
-			fontWeight: 'bold',
-			color: '#333',
-			textTransform: 'uppercase', 
-		},
-		subtitle: {
-			fontSize: '.8em',
-			color: '#888',
-		},
-	},
-	big: {
-		host: {
-			padding: '.5em',
-		},
-		title: {
-			fontSize: '1.2em',
-		},
-		title__url: {
-			color: '#555',
-		},
-		title__method: {
-			fontWeight: 'bold',
-			color: '#333',
-		},
-		subtitle: {
-			fontSize: '.8em',
-			color: '#888',
-		},
-	},
-};
+export const ApiCard = {};
+
+ApiCard.small = styled.div`
+	padding: .5em;
+`;
+
+ApiCard.small.Title = styled.div`
+	font-size: 1.2em;
+`;
+
+ApiCard.small.Subtitle = styled.div`
+	font-size: .8em;
+	color: #888;
+`;
+
+ApiCard.small.Method = styled.span`
+	font-weight: bold;
+	color: #333;
+	text-transform: uppercase; 
+`;
+
+ApiCard.small.Url = styled.span`
+	color: #555;
+`;

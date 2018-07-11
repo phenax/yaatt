@@ -3,6 +3,7 @@
 import fs from 'fs';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { ServerStyleSheet } from 'styled-components';
 import { toTestCases } from '@yaatt/utils';
 import { compose, map } from 'ramda';
 
@@ -34,12 +35,22 @@ export const toDocsFormat = (testSuite: TestSuite): ApiDocumentation => {
 	};
 };
 
-export const renderApiDocs = (apiDocs: Array<ApiDocumentation>) =>
-	renderToString(
-		<HtmlWrapper>
-			<ApiDocsPage docs={apiDocs} />
+export const renderApiDocs = (apiDocs: Array<ApiDocumentation>) => {
+	const placeholder = '{{{children}}}';
+	const sheet = new ServerStyleSheet();
+
+	const html = renderToString(sheet.collectStyles(
+		<ApiDocsPage docs={apiDocs} />
+	));
+
+	const htmlWrapper = renderToString(
+		<HtmlWrapper styles={sheet.getStyleTags()}>
+			{placeholder}
 		</HtmlWrapper>
 	);
+
+	return htmlWrapper.replace(placeholder, html);	
+}
 
 export const renderTestSuites: (Array<TestSuite> => string) =
 	compose(renderApiDocs, map(toDocsFormat));

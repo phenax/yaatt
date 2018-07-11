@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const HtmlWrapper = ({ children }) => (
+const HtmlWrapper = ({ children, styles }) => (
 	<html>
 		<head>
 			<title>MyPage</title>
@@ -14,6 +14,7 @@ const HtmlWrapper = ({ children }) => (
 				html, body, html *, body * {
 					box-sizing: border-box;
 				}
+				${styles}
 			` }} />
 		</head>
 		<body>

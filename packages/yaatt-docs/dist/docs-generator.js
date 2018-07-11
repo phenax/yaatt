@@ -11,6 +11,8 @@ var _react = _interopRequireDefault(require("react"));
 
 var _server = require("react-dom/server");
 
+var _styledComponents = require("styled-components");
+
 var _utils = require("@yaatt/utils");
 
 var _ramda = require("ramda");
@@ -53,9 +55,15 @@ var toDocsFormat = function toDocsFormat(testSuite) {
 exports.toDocsFormat = toDocsFormat;
 
 var renderApiDocs = function renderApiDocs(apiDocs) {
-  return (0, _server.renderToString)(_react.default.createElement(_HtmlWrapper.default, null, _react.default.createElement(_templates.default, {
+  var placeholder = '{{{children}}}';
+  var sheet = new _styledComponents.ServerStyleSheet();
+  var html = (0, _server.renderToString)(sheet.collectStyles(_react.default.createElement(_templates.default, {
     docs: apiDocs
   })));
+  var htmlWrapper = (0, _server.renderToString)(_react.default.createElement(_HtmlWrapper.default, {
+    styles: sheet.getStyleTags()
+  }, placeholder));
+  return htmlWrapper.replace(placeholder, html);
 };
 
 exports.renderApiDocs = renderApiDocs;

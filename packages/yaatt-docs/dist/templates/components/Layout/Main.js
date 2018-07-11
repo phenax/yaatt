@@ -13,9 +13,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _default = function _default(_ref) {
   var children = _ref.children;
-  return _react.default.createElement("div", {
-    style: _styles.main.host
-  }, children);
+  return _react.default.createElement(_styles.Main, null, children);
 };
 
 exports.default = _default;

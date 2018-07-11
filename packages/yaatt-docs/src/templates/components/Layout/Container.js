@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { container } from './styles';
+import { Container } from './styles';
 
 export default ({ children }) => (
-	<div style={container.host}>
+	<Container>
 		{children}
-	</div>
+	</Container>
 );

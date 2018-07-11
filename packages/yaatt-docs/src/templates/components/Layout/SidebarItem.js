@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { sidebar } from './styles';
+import { Sidebar } from './styles';
 
 export default ({ children }) => (
-	<div style={sidebar.item}>
+	<Sidebar.Item>
 		{children}
-	</div>
+	</Sidebar.Item>
 );
