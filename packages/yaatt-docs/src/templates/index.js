@@ -1,16 +1,23 @@
 import React from 'react';
 
-import { NavSidebar } from './components/Nav';
+import { Container, Main, Sidebar } from './components/Layout';
 import { ApiCard } from './components/Card';
 
 export default ({ docs }) => (
 	<div>
-		<NavSidebar>
-			{docs.map((api, i) => (
-				<NavSidebar.Item key={i}>
-					<ApiCard type='small' api={api} />
-				</NavSidebar.Item>
-			))}
-		</NavSidebar>
+		<Container>
+			<Sidebar>
+				{docs.map((api, i) => (
+					<Sidebar.Item key={i}>
+						<ApiCard type='small' api={api} />
+					</Sidebar.Item>
+				))}
+			</Sidebar>
+			<Main>
+				{docs.map((api, i) => (
+					<ApiCard type='big' api={api} key={i} />
+				))}
+			</Main>
+		</Container>
 	</div>
 );
