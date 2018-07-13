@@ -1,10 +1,9 @@
 // export * from './docs-generator';
 
-import path from 'path';
-import { saveHtmlDocument } from './docs-generator';
+import { buildPage } from './docs-generator';
 
 
-saveHtmlDocument(path.resolve('./test-www/index.html'), [
+const apiDocs = [
 	{
 		label: 'Httpbin Get call',
 		request: {
@@ -47,4 +46,10 @@ saveHtmlDocument(path.resolve('./test-www/index.html'), [
 			'should have custom header set to Wow': { },
 		},
 	},
-]);
+];
+
+buildPage(apiDocs)
+	.fork(
+		console.log,
+		d => console.log('done')
+	);

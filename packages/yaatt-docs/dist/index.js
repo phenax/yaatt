@@ -1,13 +1,9 @@
 "use strict";
 
-var _path = _interopRequireDefault(require("path"));
-
 var _docsGenerator = require("./docs-generator");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 // export * from './docs-generator';
-(0, _docsGenerator.saveHtmlDocument)(_path.default.resolve('./test-www/index.html'), [{
+var apiDocs = [{
   label: 'Httpbin Get call',
   request: {
     url: 'http://httpbin.org/get',
@@ -51,4 +47,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     },
     'should have custom header set to Wow': {}
   }
-}]);
+}];
+(0, _docsGenerator.buildPage)(apiDocs).fork(console.log, function (d) {
+  return console.log('done');
+});

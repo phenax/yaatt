@@ -3,23 +3,17 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.saveHtmlDocument = exports.renderTestSuites = exports.renderApiDocs = exports.toDocsFormat = void 0;
+exports.buildPage = exports.toDocsFormat = void 0;
 
-var _fs = _interopRequireDefault(require("fs"));
+var _webpack = _interopRequireDefault(require("webpack"));
 
-var _react = _interopRequireDefault(require("react"));
-
-var _server = require("react-dom/server");
-
-var _styledComponents = require("styled-components");
+var _webpack2 = _interopRequireDefault(require("../config/webpack.config"));
 
 var _utils = require("@yaatt/utils");
 
 var _ramda = require("ramda");
 
-var _templates = _interopRequireDefault(require("./templates"));
-
-var _HtmlWrapper = _interopRequireDefault(require("./templates/HtmlWrapper"));
+var _fluture = _interopRequireDefault(require("fluture"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54,26 +48,19 @@ var toDocsFormat = function toDocsFormat(testSuite) {
 
 exports.toDocsFormat = toDocsFormat;
 
-var renderApiDocs = function renderApiDocs(apiDocs) {
-  var placeholder = '{{{children}}}';
-  var sheet = new _styledComponents.ServerStyleSheet();
-  var html = (0, _server.renderToString)(sheet.collectStyles(_react.default.createElement(_templates.default, {
-    docs: apiDocs
-  })));
-  var htmlWrapper = (0, _server.renderToString)(_react.default.createElement(_HtmlWrapper.default, {
-    styles: sheet.getStyleTags()
-  }, placeholder));
-  return htmlWrapper.replace(placeholder, html);
+var buildPage = function buildPage(apiDocs) {
+  var config = (0, _webpack2.default)({
+    templateParameters: {}
+  });
+  return _fluture.default.of(function (rej, res) {
+    return (0, _webpack.default)(config, function (err, stats) {
+      if (err || stats.hasErrors()) {
+        return rej(err || stats.compilation.errors);
+      }
+
+      return res(stats);
+    });
+  });
 };
 
-exports.renderApiDocs = renderApiDocs;
-var renderTestSuites = (0, _ramda.compose)(renderApiDocs, (0, _ramda.map)(toDocsFormat));
-exports.renderTestSuites = renderTestSuites;
-
-var saveHtmlDocument = function saveHtmlDocument(fileName, testSuites) {
-  var htmlStr = renderTestSuites(testSuites);
-
-  _fs.default.writeFileSync(fileName, htmlStr);
-};
-
-exports.saveHtmlDocument = saveHtmlDocument;
+exports.buildPage = buildPage;
