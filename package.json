@@ -1,6 +1,4 @@
 {
-  "name": "yaatt",
-  "description": "Yet another api testing toolkit. Easy tests and documentation for your http api",
   "private": true,
   "repository": "https://github.com/phenax/yaatt",
   "author": "Akshay Nair <phenax5@gmail.com>",
