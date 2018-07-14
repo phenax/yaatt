@@ -1,21 +1,20 @@
 // @flow
 
-import { compose, map, slice, split, prop } from 'ramda';
-import crypto from 'crypto';
-import { toTestCases, log } from '@yaatt/utils';
+import { compose, map, evolve } from 'ramda';
+import path from 'path';
+import { toTestCases } from '@yaatt/utils';
 
+import type Future from 'fluture';
 import type { ApiDocumentation, TestSuite } from '@yaatt/core/src/types';
 
-import getWebpackConfig from './webpackConfig';
+import { toUrlSafeString, generateRandomHex } from './utils';
+import getWebpackConfig from './webpack-config';
 import webpack from './webpack';
 
-export const generateRandomHex = (size?: number = 10): string =>
-	crypto.randomBytes(size / 2).toString('hex');
-
-export const toUrlSafeString = (str: string): string =>
-	(str || '')
-		.replace(/^https?:\/\//gi, '')
-		.replace(/[^A-Za-z0-9]+/gi, '-');
+type BuildOptions = {
+	suites: Array<ApiDocumentation>|Array<TestSuite>,
+	outputDir: string,
+};
 
 export const toDocsFormat = (testSuite: TestSuite): ApiDocumentation => {
 	const { url, method, ...request } = testSuite.request;
@@ -33,23 +32,26 @@ export const toDocsFormat = (testSuite: TestSuite): ApiDocumentation => {
 	};
 };
 
-export const toWebpackConfig = (apiDocs: Array<ApiDocumentation>) => ({
+export const toWebpackConfig = ({ suites, outputDir }: BuildOptions) => ({
+	outputPath: path.resolve(outputDir),
 	templateParameters: {
 		globalData: `
 			window.__DATA = {};
-			window.__DATA.apiDocs = ${JSON.stringify(apiDocs)};
+			window.__DATA.apiDocs = ${JSON.stringify(suites)};
 		`,
 	},
 });
 
-export const buildApiDocs = compose(
+export const buildApiDocs: (BuildOptions => Future) = compose(
 	webpack,
 	getWebpackConfig,
 	toWebpackConfig,
 );
 
-export const build = compose(
+export const build: (BuildOptions => Future) = compose(
 	buildApiDocs,
-	map(toDocsFormat),
+	evolve({
+		suites: map(toDocsFormat)
+	}),
 );
 

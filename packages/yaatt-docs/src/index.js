@@ -48,7 +48,7 @@ const testSuiteList = [
 	},
 ];
 
-build(testSuiteList)
+build({ suites: testSuiteList, outputDir: '/home/akshayn/Desktop/randomtest' })
 	.fork(
 		console.log,
 		d => console.log('done')

@@ -48,6 +48,9 @@ var testSuiteList = [{
     'should have custom header set to Wow': {}
   }
 }];
-(0, _docsGenerator.build)(testSuiteList).fork(console.log, function (d) {
+(0, _docsGenerator.build)({
+  suites: testSuiteList,
+  outputDir: '/home/akshayn/Desktop/randomtest'
+}).fork(console.log, function (d) {
   return console.log('done');
 });
