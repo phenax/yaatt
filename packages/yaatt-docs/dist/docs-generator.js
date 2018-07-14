@@ -3,17 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.buildPage = exports.toDocsFormat = void 0;
-
-var _webpack = _interopRequireDefault(require("webpack"));
-
-var _webpack2 = _interopRequireDefault(require("../config/webpack.config"));
-
-var _utils = require("@yaatt/utils");
+exports.build = exports.buildApiDocs = exports.toDocsFormat = void 0;
 
 var _ramda = require("ramda");
 
-var _fluture = _interopRequireDefault(require("fluture"));
+var _utils = require("@yaatt/utils");
+
+var _webpackConfig = _interopRequireDefault(require("./webpackConfig"));
+
+var _webpack = _interopRequireDefault(require("./webpack"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48,19 +46,15 @@ var toDocsFormat = function toDocsFormat(testSuite) {
 
 exports.toDocsFormat = toDocsFormat;
 
-var buildPage = function buildPage(apiDocs) {
-  var config = (0, _webpack2.default)({
-    templateParameters: {}
-  });
-  return _fluture.default.of(function (rej, res) {
-    return (0, _webpack.default)(config, function (err, stats) {
-      if (err || stats.hasErrors()) {
-        return rej(err || stats.compilation.errors);
-      }
-
-      return res(stats);
-    });
-  });
+var toWebpackConfig = function toWebpackConfig(apiDocs) {
+  return {
+    templateParameters: {
+      globalData: "\n\t\t\twindow.__DATA = {};\n\t\t\twindow.__DATA.apiDocs = ".concat(JSON.stringify(apiDocs), ";\n\t\t")
+    }
+  };
 };
 
-exports.buildPage = buildPage;
+var buildApiDocs = (0, _ramda.compose)(_webpack.default, _webpackConfig.default, toWebpackConfig);
+exports.buildApiDocs = buildApiDocs;
+var build = (0, _ramda.compose)(buildApiDocs, (0, _ramda.map)(toDocsFormat));
+exports.build = build;

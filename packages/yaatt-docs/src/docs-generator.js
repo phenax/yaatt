@@ -1,12 +1,13 @@
 // @flow
 
-import webpack from 'webpack';
-import webpackConfig from '../config/webpack.config';
-import { toTestCases } from '@yaatt/utils';
-import { compose, merge } from 'ramda';
-import Future from 'fluture';
+import { compose, map } from 'ramda';
+import { toTestCases, log } from '@yaatt/utils';
 
 import type { ApiDocumentation, TestSuite } from '@yaatt/core/src/types';
+
+import getWebpackConfig from './webpackConfig';
+import webpack from './webpack';
+
 
 const getRandomId = () => Math.random().toString(16).split('.')[1].slice(0, 8);
 
@@ -31,16 +32,23 @@ export const toDocsFormat = (testSuite: TestSuite): ApiDocumentation => {
 	};
 };
 
-export const buildPage = (apiDocs: Array<ApiDocumentation>) => {
-	const config = webpackConfig({
-		templateParameters: {
+const toWebpackConfig = (apiDocs) => ({
+	templateParameters: {
+		globalData: `
+			window.__DATA = {};
+			window.__DATA.apiDocs = ${JSON.stringify(apiDocs)};
+		`,
+	},
+});
 
-		},
-	});
+export const buildApiDocs = compose(
+	webpack,
+	getWebpackConfig,
+	toWebpackConfig,
+);
 
-	return Future.of((rej, res) => webpack(config, (err, stats) =>
-		err || stats.hasErrors()
-			? rej(err || stats.compilation.errors)
-			: res(stats)	
-	));
-};
+export const build = compose(
+	buildApiDocs,
+	map(toDocsFormat),
+);
+

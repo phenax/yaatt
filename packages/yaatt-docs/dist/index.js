@@ -3,7 +3,7 @@
 var _docsGenerator = require("./docs-generator");
 
 // export * from './docs-generator';
-var apiDocs = [{
+var testSuiteList = [{
   label: 'Httpbin Get call',
   request: {
     url: 'http://httpbin.org/get',
@@ -48,6 +48,6 @@ var apiDocs = [{
     'should have custom header set to Wow': {}
   }
 }];
-(0, _docsGenerator.buildPage)(apiDocs).fork(console.log, function (d) {
+(0, _docsGenerator.build)(testSuiteList).fork(console.log, function (d) {
   return console.log('done');
 });

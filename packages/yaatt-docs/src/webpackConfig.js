@@ -1,8 +1,8 @@
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-const babelConfig = {
+export const babelConfig = {
 	presets: [
 		'@babel/preset-env',
 		'@babel/preset-react',

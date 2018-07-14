@@ -1,9 +1,9 @@
 // export * from './docs-generator';
 
-import { buildPage } from './docs-generator';
+import { build } from './docs-generator';
 
 
-const apiDocs = [
+const testSuiteList = [
 	{
 		label: 'Httpbin Get call',
 		request: {
@@ -48,7 +48,7 @@ const apiDocs = [
 	},
 ];
 
-buildPage(apiDocs)
+build(testSuiteList)
 	.fork(
 		console.log,
 		d => console.log('done')
