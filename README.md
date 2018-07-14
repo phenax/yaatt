@@ -9,13 +9,13 @@ Easy tests and documentation for your http api
 Add it globally or locally
 
 ```
-sudo yarn global add yaatt
+sudo yarn global add @yaatt/cli
 ```
 
 OR if you are barbaric,
 
 ```
-sudo npm i -g yaatt
+sudo npm i -g @yaatt/cli
 ```
 
 ## Usage
@@ -109,6 +109,7 @@ module.exports = {
 
 ### Running your test suite
 
+#### Just cli
 ```
 yaatt ./path/to/yourtestsuite1.suite.js ./path/to/yourtestsuite2.suite.js
 ```
@@ -116,4 +117,16 @@ yaatt ./path/to/yourtestsuite1.suite.js ./path/to/yourtestsuite2.suite.js
 You can even use glob paths
 ```
 yaatt ./path/**/*.test.js
+```
+
+#### Using config file
+```
+yaatt -c config.yaatt.json
+```
+
+And in your `config.yaatt.json` -
+```json
+{
+    "testSuites": [ "./path/**/*.test.js" ],
+}
 ```
