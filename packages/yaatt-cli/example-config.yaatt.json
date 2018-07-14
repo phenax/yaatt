@@ -1,0 +1,5 @@
+{
+	"testSuites": [
+		"./examples/schema/*.js"
+	]
+}

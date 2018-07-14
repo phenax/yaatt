@@ -1,6 +1,6 @@
 
-import {Response} from '../src/Response';
-import Joi from '@yaatt/utils';
+import { Response } from '../src/Response';
+import { Joi } from '@yaatt/utils';
 
 describe('Response', () => {
 
