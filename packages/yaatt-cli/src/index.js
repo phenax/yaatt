@@ -1,9 +1,9 @@
 
 const path = require('path');
 const glob = require('glob');
-const { flatten, map, compose } = require('ramda');
+const { flatten, map, compose, cond, prop, propSatisfies, T, isEmpty, not } = require('ramda');
 const yargs = require('yargs');
-const { throwError, log } = require('@yaatt/utils');
+const { throwError } = require('@yaatt/utils');
 
 // TODO: Use Joi to validate arguments
 // TODO: Have more config passed via arguments
@@ -43,9 +43,31 @@ const getArguments = () => {
 		.argv;
 };
 
+const loadConfig = compose(
+	require,
+	path.resolve,
+);
+
+const toCliConfig = ({ _: testSuites }) => ({
+	testSuites,
+});
+
+const isConfigPassed = propSatisfies(compose(not, isEmpty), 'config');
+
+const argumentsToConfig = cond([
+	[ isConfigPassed,  compose(loadConfig, prop('config')) ],
+	[ T,               toCliConfig ],
+]);
+
+const getConfig = compose(
+	argumentsToConfig,
+	getArguments,
+);
+
 module.exports = {
 	resolvePaths,
 	validateArgs,
 	importTestCase,
 	getArguments,
+	getConfig,
 };
