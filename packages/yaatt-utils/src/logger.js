@@ -60,6 +60,19 @@ export const logError = (e: Error) => {
 	return e;
 };
 
+const colorChalk = {
+	red: chalk.red,
+	blue: chalk.blue,
+	green: chalk.green,
+};
+
+export const logInfo = (msg: string, color: string) => (data: any) => {
+	let _chalk = colorChalk[color] || colorChalk['blue'];
+	konsole.log(_chalk.bold(msg));
+	return data;
+};
+
+
 export const log = (label: string) => (data: any): any => {
 	console.log(
 		chalk.blue.bold(

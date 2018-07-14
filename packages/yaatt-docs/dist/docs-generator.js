@@ -41,12 +41,12 @@ var toDocsFormat = function toDocsFormat(testSuite) {
 exports.toDocsFormat = toDocsFormat;
 
 var getConfigModifiers = function getConfigModifiers(_ref) {
-  var suites = _ref.suites,
+  var testSuites = _ref.testSuites,
       outputDir = _ref.outputDir;
   return {
     outputPath: _path.default.resolve(outputDir),
     templateParameters: {
-      globalData: "\n\t\t\twindow.__DATA = {};\n\t\t\twindow.__DATA.apiDocs = ".concat(JSON.stringify(suites), ";\n\t\t")
+      globalData: "\n\t\t\twindow.__DATA = {};\n\t\t\twindow.__DATA.apiDocs = ".concat(JSON.stringify(testSuites), ";\n\t\t")
     }
   };
 };
@@ -55,6 +55,6 @@ exports.getConfigModifiers = getConfigModifiers;
 var buildApiDocs = (0, _ramda.compose)(_webpack.default, _webpackConfig.default, getConfigModifiers);
 exports.buildApiDocs = buildApiDocs;
 var build = (0, _ramda.compose)(buildApiDocs, (0, _ramda.evolve)({
-  suites: (0, _ramda.map)(toDocsFormat)
+  testSuites: (0, _ramda.map)(toDocsFormat)
 }));
 exports.build = build;

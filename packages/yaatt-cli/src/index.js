@@ -23,11 +23,16 @@ const resolvePaths = compose(
 	map(glob.sync),
 );
 
-const getArguments = () => {
-	return yargs
+const getArguments = () => 
+	yargs
 		.option('config', {
 			describe: 'Specify path to config file',
 			alias: 'c',
+			type: 'string',
+		})
+		.option('docs', {
+			describe: 'Path to dump html api documentation generated from the test suites',
+			alias: 'd',
 			type: 'string',
 		})
 		.option('help', {
@@ -41,15 +46,17 @@ const getArguments = () => {
 			type: 'boolean',
 		})
 		.argv;
-};
 
 const loadConfig = compose(
 	require,
 	path.resolve,
 );
 
-const toCliConfig = ({ _: testSuites }) => ({
+const toCliConfig = ({ _: testSuites, docs }) => ({
 	testSuites,
+	documentation: {
+		outputDir: docs,
+	},
 });
 
 const argumentsToConfig = cond([

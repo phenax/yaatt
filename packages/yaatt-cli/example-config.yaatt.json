@@ -1,5 +1,8 @@
 {
 	"testSuites": [
 		"./examples/schema/*.js"
-	]
+	],
+	"documentation": {
+		"outputDir": "./testBuild"
+	}
 }
