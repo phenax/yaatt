@@ -1,37 +1,11 @@
 #!/usr/bin/env node
 
-const { map, compose, prop, cond, T, propSatisfies } = require('ramda');
-const { runTestSuite } = require('@yaatt/core');
-const { mapFutureSync, logError, logNewLine, logInfo } = require('@yaatt/utils');
-const { buildDocs } = require('@yaatt/docs');
-// const Future = require('fluture');
+const { compose, cond, T, propSatisfies } = require('ramda');
+const { logError, logNewLine } = require('@yaatt/utils');
 
-const { importTestCase, resolvePaths, validateArgs, getConfig } = require('../src');
-
-const loadTestSuites = compose(
-	map(importTestCase),
-	resolvePaths,
-);
-
-const executeTestSuites = compose(
-	mapFutureSync(runTestSuite),
-	logInfo('Running tests...'),
-	loadTestSuites,
-	prop('testSuites'),
-);
-
-const toDocumentationOptions = ({ testSuites, documentation, ...props }) => ({
-	testSuites: loadTestSuites(testSuites),
-	...props,
-	...documentation
-});
-
-const generateDocumentation = compose(
-	map(logInfo('Build successful', 'green')),
-	buildDocs,
-	logInfo('Generating documentation...'),
-	toDocumentationOptions,
-);
+const { validateArgs, getConfig } = require('../src/cli-utils');
+const { executeTestSuites } = require('../src/tester');
+const { generateDocumentation } = require('../src/docs');
 
 
 const isDocs = propSatisfies(x => !!x, 'documentation');

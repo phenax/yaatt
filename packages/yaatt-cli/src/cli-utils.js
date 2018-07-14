@@ -1,7 +1,6 @@
 
 const path = require('path');
-const glob = require('glob');
-const { flatten, map, compose, cond, prop, propSatisfies, T } = require('ramda');
+const { compose, cond, prop, propSatisfies, T } = require('ramda');
 const yargs = require('yargs');
 const { throwError } = require('@yaatt/utils');
 
@@ -14,14 +13,6 @@ const validateArgs = (args) => {
 
 	return args;
 };
-
-const importTestCase = require;
-
-const resolvePaths = compose(
-	map(path.resolve),
-	flatten,
-	map(glob.sync),
-);
 
 const getArguments = () => 
 	yargs
@@ -70,9 +61,8 @@ const getConfig = compose(
 );
 
 module.exports = {
-	resolvePaths,
 	validateArgs,
-	importTestCase,
 	getArguments,
 	getConfig,
 };
+
