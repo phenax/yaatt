@@ -1,6 +1,6 @@
 {
   "name": "@yaatt/cli",
-  "version": "0.0.1-test.3",
+  "version": "0.0.1-test.5",
   "description": "A cli tool to write api tests and documentation",
   "main": "bin/yaatt.js",
   "bin": {
@@ -10,8 +10,8 @@
   "author": "Akshay Nair<phenax5@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@yaatt/core": "^0.0.1-test.3",
-    "@yaatt/utils": "^0.0.1-test.3",
+    "@yaatt/core": "^0.0.1-test.5",
+    "@yaatt/utils": "^0.0.1-test.5",
     "chalk": "^2.4.1",
     "fluture": "^8.0.2",
     "ramda": "^0.25.0",

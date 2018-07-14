@@ -1,6 +1,6 @@
 {
   "name": "@yaatt/utils",
-  "version": "0.0.1-test.3",
+  "version": "0.0.1-test.5",
   "description": "Generic utility functions",
   "main": "dist/index.js",
   "repository": "https://github.com/phenax/yaatt",
@@ -11,7 +11,7 @@
     "test": "jest ./test"
   },
   "dependencies": {
-    "@yaatt/core": "^0.0.1-test.3",
+    "@yaatt/core": "^0.0.1-test.5",
     "axios": "^0.18.0",
     "chalk": "^2.4.1",
     "fluture": "^8.0.2",
