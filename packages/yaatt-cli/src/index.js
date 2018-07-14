@@ -1,7 +1,7 @@
 
 const path = require('path');
 const glob = require('glob');
-const { flatten, map, compose, cond, prop, propSatisfies, T, isEmpty, not } = require('ramda');
+const { flatten, map, compose, cond, prop, propSatisfies, T } = require('ramda');
 const yargs = require('yargs');
 const { throwError } = require('@yaatt/utils');
 
@@ -28,17 +28,17 @@ const getArguments = () => {
 		.option('config', {
 			describe: 'Specify path to config file',
 			alias: 'c',
-			default: '',
+			type: 'string',
 		})
 		.option('help', {
 			describe: 'Get information about yaatt cli options',
 			alias: 'h',
-			default: false,
+			type: 'boolean',
 		})
 		.option('version', {
 			describe: 'Show current @yaatt/cli version number',
 			alias: 'v',
-			default: false,
+			type: 'boolean',
 		})
 		.argv;
 };
@@ -52,11 +52,9 @@ const toCliConfig = ({ _: testSuites }) => ({
 	testSuites,
 });
 
-const isConfigPassed = propSatisfies(compose(not, isEmpty), 'config');
-
 const argumentsToConfig = cond([
-	[ isConfigPassed,  compose(loadConfig, prop('config')) ],
-	[ T,               toCliConfig ],
+	[ propSatisfies(x => !!x, 'config'), compose(loadConfig, prop('config')) ],
+	[ T, toCliConfig ],
 ]);
 
 const getConfig = compose(
