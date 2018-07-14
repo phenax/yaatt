@@ -1,6 +1,7 @@
 // @flow
 
-import { compose, map } from 'ramda';
+import { compose, map, slice, split, prop } from 'ramda';
+import crypto from 'crypto';
 import { toTestCases, log } from '@yaatt/utils';
 
 import type { ApiDocumentation, TestSuite } from '@yaatt/core/src/types';
@@ -8,17 +9,17 @@ import type { ApiDocumentation, TestSuite } from '@yaatt/core/src/types';
 import getWebpackConfig from './webpackConfig';
 import webpack from './webpack';
 
+export const generateRandomHex = (size?: number = 10): string =>
+	crypto.randomBytes(size / 2).toString('hex');
 
-const getRandomId = () => Math.random().toString(16).split('.')[1].slice(0, 8);
-
-const toSlug = (url: string): string =>
-	(url || '')
+export const toUrlSafeString = (str: string): string =>
+	(str || '')
 		.replace(/^https?:\/\//gi, '')
 		.replace(/[^A-Za-z0-9]+/gi, '-');
 
 export const toDocsFormat = (testSuite: TestSuite): ApiDocumentation => {
 	const { url, method, ...request } = testSuite.request;
-	const id = getRandomId();
+	const id = generateRandomHex();
 
 	return {
 		id,
@@ -27,12 +28,12 @@ export const toDocsFormat = (testSuite: TestSuite): ApiDocumentation => {
 		url,
 		method,
 		request,
-		docLink: `/suite/${method}--${toSlug(url)}--${id}`,
+		docLink: `/suite/${method}--${toUrlSafeString(url)}--${id}`,
 		tests: toTestCases(testSuite),
 	};
 };
 
-const toWebpackConfig = (apiDocs) => ({
+export const toWebpackConfig = (apiDocs: Array<ApiDocumentation>) => ({
 	templateParameters: {
 		globalData: `
 			window.__DATA = {};
