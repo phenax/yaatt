@@ -1,6 +1,6 @@
 {
   "name": "@yaatt/docs",
-  "version": "0.0.1-test.3",
+  "version": "0.0.1-test.5",
   "description": "Helpers to generate documentation from your api test suite",
   "main": "dist/index.js",
   "repository": "https://github.com/phenax/yaatt",
@@ -14,8 +14,8 @@
     "@babel/plugin-proposal-class-properties": "^7.0.0-beta.53",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.53",
     "@babel/preset-react": "^7.0.0-beta.53",
-    "@yaatt/core": "^0.0.1-test.3",
-    "@yaatt/utils": "^0.0.1-test.3",
+    "@yaatt/core": "^0.0.1-test.5",
+    "@yaatt/utils": "^0.0.1-test.5",
     "babel-loader": "^7.1.5",
     "fluture": "^8.0.2",
     "html-webpack-plugin": "^3.2.0",
