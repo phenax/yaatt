@@ -1,33 +1,41 @@
 #!/usr/bin/env node
 
 const path = require('path');
-const glob = require('glob');
-const { flatten, map, compose } = require('ramda');
-const yargs = require('yargs');
-
+const { map, compose, prop, cond, propSatisfies, T, isEmpty, not } = require('ramda');
 const { runTestSuite } = require('@yaatt/core');
-const { mapFutureSync, throwError, logError, logNewLine } = require('@yaatt/utils');
+const { mapFutureSync, logError, logNewLine, log } = require('@yaatt/utils');
 
-// TODO: Use Joi to validate arguments
-// TODO: Have more config passed via arguments
-const validateArgs = suitePaths => {
-	if(!suitePaths.length) {
-		return throwError('Need to specify path to test suite');
-	}
+const { importTestCase, resolvePaths, validateArgs, getArguments } = require('../src');
 
-	return suitePaths;
-};
-
-const importTestCase = require;
-
-const initTests = compose(
-	mapFutureSync(runTestSuite),
-	map(importTestCase),
-	map(path.resolve),
-	flatten,
-	map(glob.sync),
-	validateArgs,
+const loadConfig = compose(
+	require,
+	path.resolve,
 );
 
-initTests(yargs.argv._ || [])
-	.fork(logError, logNewLine);
+const toCliConfig = ({ _: testSuites }) => ({
+	testSuites,
+});
+
+const isConfigPassed = propSatisfies(compose(not, isEmpty), 'config');
+
+const argumentsToConfig = cond([
+	[ isConfigPassed,  compose(loadConfig, prop('config')) ],
+	[ T,               toCliConfig ],
+]);
+
+const getConfig = compose(
+	argumentsToConfig,
+	getArguments,
+);
+
+
+const init = compose(
+	mapFutureSync(runTestSuite),
+	map(importTestCase),
+	resolvePaths,
+	prop('testSuites'),
+	validateArgs,
+	getConfig,
+);
+
+init().fork(logError, logNewLine);
