@@ -1,9 +1,10 @@
 // @flow
 
 import { parse } from 'querystring';
-import { curry } from 'ramda';
+import { curry, always } from 'ramda';
 import axios from 'axios';
 import Future from 'fluture';
+import crypto from 'crypto';
 
 import type { QueryParams, TestError, TestSuite, TestCase, RequestOptions, MapFutureFunction, Pair } from '@yaatt/core/src/types';
 
@@ -65,10 +66,18 @@ export const tryF = (fn: (any) => any) => (...args: Array<any>) =>
 	Future.try(() => fn(...args));
 
 
-export const constant = (x: any) => () => x;
+export const constant = always;
 
 export const mapToList = (objectMap: Object): Array<Pair> =>
 	Object.keys(objectMap || {}).map(key => ({ key, value: objectMap[key] }));
 
 export const listToMap = (list: Array<Pair>) =>
 	(list || []).reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {});
+
+export const generateRandomHex = (size?: number = 10): string =>
+	crypto.randomBytes(size / 2).toString('hex');
+
+export const toUrlSafeString = (str: string): string =>
+	(str || '')
+		.replace(/^https?:\/\//gi, '')
+		.replace(/[^A-Za-z0-9]+/gi, '-');

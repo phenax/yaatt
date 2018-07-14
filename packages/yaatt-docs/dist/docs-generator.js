@@ -3,15 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.build = exports.buildApiDocs = exports.toWebpackConfig = exports.toDocsFormat = void 0;
+exports.build = exports.buildApiDocs = exports.getConfigModifiers = exports.toDocsFormat = void 0;
 
 var _ramda = require("ramda");
 
 var _path = _interopRequireDefault(require("path"));
 
 var _utils = require("@yaatt/utils");
-
-var _utils2 = require("./utils");
 
 var _webpackConfig = _interopRequireDefault(require("./webpack-config"));
 
@@ -27,7 +25,7 @@ var toDocsFormat = function toDocsFormat(testSuite) {
       method = _testSuite$request.method,
       request = _objectWithoutProperties(_testSuite$request, ["url", "method"]);
 
-  var id = (0, _utils2.generateRandomHex)();
+  var id = (0, _utils.generateRandomHex)();
   return {
     id: id,
     name: testSuite.label,
@@ -35,14 +33,14 @@ var toDocsFormat = function toDocsFormat(testSuite) {
     url: url,
     method: method,
     request: request,
-    docLink: "/suite/".concat(method, "--").concat((0, _utils2.toUrlSafeString)(url), "--").concat(id),
+    docLink: "/suite/".concat(method, "--").concat((0, _utils.toUrlSafeString)(url), "--").concat(id),
     tests: (0, _utils.toTestCases)(testSuite)
   };
 };
 
 exports.toDocsFormat = toDocsFormat;
 
-var toWebpackConfig = function toWebpackConfig(_ref) {
+var getConfigModifiers = function getConfigModifiers(_ref) {
   var suites = _ref.suites,
       outputDir = _ref.outputDir;
   return {
@@ -53,8 +51,8 @@ var toWebpackConfig = function toWebpackConfig(_ref) {
   };
 };
 
-exports.toWebpackConfig = toWebpackConfig;
-var buildApiDocs = (0, _ramda.compose)(_webpack.default, _webpackConfig.default, toWebpackConfig);
+exports.getConfigModifiers = getConfigModifiers;
+var buildApiDocs = (0, _ramda.compose)(_webpack.default, _webpackConfig.default, getConfigModifiers);
 exports.buildApiDocs = buildApiDocs;
 var build = (0, _ramda.compose)(buildApiDocs, (0, _ramda.evolve)({
   suites: (0, _ramda.map)(toDocsFormat)

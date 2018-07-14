@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.listToMap = exports.mapToList = exports.constant = exports.tryF = exports.request = exports.mapFutureAsync = exports.mapFutureSync = exports.toTestCases = exports.toParams = exports.throwError = void 0;
+exports.toUrlSafeString = exports.generateRandomHex = exports.listToMap = exports.mapToList = exports.constant = exports.tryF = exports.request = exports.mapFutureAsync = exports.mapFutureSync = exports.toTestCases = exports.toParams = exports.throwError = void 0;
 
 var _querystring = require("querystring");
 
@@ -12,6 +12,8 @@ var _ramda = require("ramda");
 var _axios = _interopRequireDefault(require("axios"));
 
 var _fluture = _interopRequireDefault(require("fluture"));
+
+var _crypto = _interopRequireDefault(require("crypto"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -98,13 +100,7 @@ var tryF = function tryF(fn) {
 };
 
 exports.tryF = tryF;
-
-var constant = function constant(x) {
-  return function () {
-    return x;
-  };
-};
-
+var constant = _ramda.always;
 exports.constant = constant;
 
 var mapToList = function mapToList(objectMap) {
@@ -127,3 +123,16 @@ var listToMap = function listToMap(list) {
 };
 
 exports.listToMap = listToMap;
+
+var generateRandomHex = function generateRandomHex() {
+  var size = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+  return _crypto.default.randomBytes(size / 2).toString('hex');
+};
+
+exports.generateRandomHex = generateRandomHex;
+
+var toUrlSafeString = function toUrlSafeString(str) {
+  return (str || '').replace(/^https?:\/\//gi, '').replace(/[^A-Za-z0-9]+/gi, '-');
+};
+
+exports.toUrlSafeString = toUrlSafeString;

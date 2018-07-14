@@ -2,19 +2,20 @@
 
 import { compose, map, evolve } from 'ramda';
 import path from 'path';
-import { toTestCases } from '@yaatt/utils';
+import { toTestCases, toUrlSafeString, generateRandomHex } from '@yaatt/utils';
 
 import type Future from 'fluture';
 import type { ApiDocumentation, TestSuite } from '@yaatt/core/src/types';
 
-import { toUrlSafeString, generateRandomHex } from './utils';
 import getWebpackConfig from './webpack-config';
 import webpack from './webpack';
 
+type ConfigModifiers = Object;
 type BuildOptions = {
 	suites: Array<ApiDocumentation>|Array<TestSuite>,
 	outputDir: string,
 };
+
 
 export const toDocsFormat = (testSuite: TestSuite): ApiDocumentation => {
 	const { url, method, ...request } = testSuite.request;
@@ -32,7 +33,7 @@ export const toDocsFormat = (testSuite: TestSuite): ApiDocumentation => {
 	};
 };
 
-export const toWebpackConfig = ({ suites, outputDir }: BuildOptions) => ({
+export const getConfigModifiers = ({ suites, outputDir }: BuildOptions): ConfigModifiers => ({
 	outputPath: path.resolve(outputDir),
 	templateParameters: {
 		globalData: `
@@ -45,7 +46,7 @@ export const toWebpackConfig = ({ suites, outputDir }: BuildOptions) => ({
 export const buildApiDocs: (BuildOptions => Future) = compose(
 	webpack,
 	getWebpackConfig,
-	toWebpackConfig,
+	getConfigModifiers,
 );
 
 export const build: (BuildOptions => Future) = compose(
