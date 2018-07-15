@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.listToMap = exports.mapToList = exports.constant = exports.tryF = exports.request = exports.mapFutureAsync = exports.mapFutureSync = exports.toTestCases = exports.toParams = exports.throwError = void 0;
+exports.listToMap = exports.mapToList = exports.tryF = exports.request = exports.mapFutureAsync = exports.mapFutureSync = exports.toTestCases = exports.toParams = exports.throwError = void 0;
 
 var _querystring = require("querystring");
 
@@ -98,14 +98,6 @@ var tryF = function tryF(fn) {
 };
 
 exports.tryF = tryF;
-
-var constant = function constant(x) {
-  return function () {
-    return x;
-  };
-};
-
-exports.constant = constant;
 
 var mapToList = function mapToList(objectMap) {
   return Object.keys(objectMap || {}).map(function (key) {
