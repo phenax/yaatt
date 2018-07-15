@@ -1,5 +1,6 @@
 
-import { toDocsFormat, buildApiDocs } from '../src/docs-generator';
+import { toDocsFormat, build } from '../src/docs-generator';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 jest.mock('../src/webpack.js');
 
@@ -54,11 +55,11 @@ describe('docs generator', () => {
 		});
 	});
 
-	describe('buildApiDocs', () => {
+	describe('build', () => {
 
 		it('should call webpack with the config object with the correct output dir', done => {
 
-			const future = buildApiDocs({
+			const future = build({
 				testSuites: dummyTestSuites,
 				outputDir: './some-directory/output',
 			});
@@ -68,6 +69,33 @@ describe('docs generator', () => {
 				config => {
 					expect(config.output.path).toContain('some-directory/output');
 					expect(/\/some-directory\/output$/gi.test(config.output.path)).toBeTruthy();
+					done();
+				},
+			);
+		});
+
+		it('should call webpack with the config object with the correct output dir', done => {
+
+			const future = build({
+				testSuites: dummyTestSuites,
+				outputDir: './some-directory/output',
+			});
+
+			future.fork(
+				e => done(e),
+				config => {
+					config.plugins
+						.filter(plugin => plugin instanceof HtmlWebpackPlugin)
+						.forEach(plugin => {
+
+							// Check if global data has the test suite information
+							const { globalData } = plugin.options.templateParameters;
+
+							dummyTestSuites.forEach(({ label }) => {
+								expect(globalData).toContain(JSON.stringify(label));
+							});
+						});
+
 					done();
 				},
 			);
