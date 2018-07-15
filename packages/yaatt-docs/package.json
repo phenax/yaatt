@@ -1,6 +1,6 @@
 {
   "name": "@yaatt/docs",
-  "version": "0.0.1-test.5",
+  "version": "0.0.1-test.6",
   "description": "Helpers to generate documentation from your api test suite",
   "main": "dist/index.js",
   "repository": "https://github.com/phenax/yaatt",

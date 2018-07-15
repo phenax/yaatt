@@ -12,11 +12,11 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.51",
-    "@babel/core": "^7.0.0-beta.51",
-    "@babel/preset-env": "^7.0.0-beta.51",
-    "@babel/preset-flow": "^7.0.0-beta.51",
-    "babel-core": "^7.0.0-0",
+    "@babel/cli": "^7.0.0-beta.53",
+    "@babel/core": "^7.0.0-beta.53",
+    "@babel/preset-env": "^7.0.0-beta.53",
+    "@babel/preset-flow": "^7.0.0-beta.53",
+    "babel-core": "^7.0.0-beta.3",
     "babel-eslint": "^8.2.5",
     "babel-jest": "^23.0.1",
     "eslint": "^5.0.0",
