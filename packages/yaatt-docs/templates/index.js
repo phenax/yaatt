@@ -1,32 +1,8 @@
 import React from 'react';
+import { render } from 'react-dom';
 
-import { Container, Main, Sidebar } from './components/Layout';
-import { ApiCard } from './components/Card';
+import App from './App';
 
-const getTestUrl = ({ id }) => `/test/${id}`;
+const docs = window.__DATA.apiDocs;
 
-export default ({ docs }) => (
-	<div>
-		<Container>
-			<Sidebar>
-				{docs.map(api => (
-					<Sidebar.Item key={api.id}>
-						<Sidebar.Link href={`#${getTestUrl(api)}`}>
-							<ApiCard type='small' api={api} />
-						</Sidebar.Link>
-					</Sidebar.Item>
-				))}
-			</Sidebar>
-			<Main>
-				{docs.map(api => (
-					<ApiCard
-						id={getTestUrl(api)}
-						type='big'
-						api={api}
-						key={api.id}
-					/>
-				))}
-			</Main>
-		</Container>
-	</div>
-);
+render(<App docs={docs} />, document.getElementById('root'));
