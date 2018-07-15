@@ -56,3 +56,4 @@ export const build: (BuildOptions => Future) = compose(
 	}),
 );
 
+export { webpack };
