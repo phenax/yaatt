@@ -64,9 +64,6 @@ export const request: FetchFunction = Future.encaseP(options =>
 export const tryF = (fn: Function) => (...args: Array<any>) =>
 	Future.try(() => fn(...args));
 
-
-export const constant = (x: any) => () => x;
-
 export const mapToList = (objectMap: Object): Array<Pair> =>
 	Object.keys(objectMap || {}).map(key => ({ key, value: objectMap[key] }));
 
