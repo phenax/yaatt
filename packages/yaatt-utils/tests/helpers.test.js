@@ -1,7 +1,7 @@
 
-import { throwError, toParams } from '../src';
+import { throwError, toParams } from '../src/helpers';
 
-describe('utils', () => {
+describe('helpers', () => {
 
 	describe('throwError', () => {
 

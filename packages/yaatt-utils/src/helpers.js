@@ -61,7 +61,7 @@ type FetchFunction = RequestOptions => Future;
 export const request: FetchFunction = Future.encaseP(options =>
 	request.mock? request.mock(options): axios(options));
 
-export const tryF = (fn: (any) => any) => (...args: Array<any>) =>
+export const tryF = (fn: Function) => (...args: Array<any>) =>
 	Future.try(() => fn(...args));
 
 
