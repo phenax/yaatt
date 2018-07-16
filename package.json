@@ -6,7 +6,8 @@
   "scripts": {
     "build": "lerna run build --parallel --stream",
     "build:watch": "lerna run build --parallel --stream -- --watch",
-    "test": "lerna run test --parallel --stream"
+    "test": "lerna run test --parallel --stream",
+    "test:ci": "lerna run test:ci --parallel --stream && codecov"
   },
   "workspaces": [
     "packages/*"
@@ -27,12 +28,22 @@
     "eslint-plugin-react": "^7.10.0",
     "flow-bin": "^0.75.0",
     "jest": "^23.1.0",
+    "codecov": "^3.0.4",
     "lerna": "^2.11.0"
   },
   "jest": {
     "testEnvironment": "node",
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "packages/**/*.{js}",
+      "!**/node_modules/**"
+    ],
+    "roots": [
+      "packages/"
+    ],
     "transform": {
-      "^.+\\.jsx?$": "babel-jest"
+      "^.+\\.js$": "babel-jest"
     }
   }
 }

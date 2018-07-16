@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src -d dist --copy-files",
-    "test": "jest ./test"
+    "test": "jest ./test",
+    "test:ci": "npm run test -- --coverage"
   },
   "dependencies": {
     "@yaatt/core": "^0.0.1-test.6",

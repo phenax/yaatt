@@ -3,6 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+Object.defineProperty(exports, "webpack", {
+  enumerable: true,
+  get: function get() {
+    return _webpack.default;
+  }
+});
 exports.build = exports.buildApiDocs = exports.getConfigModifiers = exports.toDocsFormat = void 0;
 
 var _ramda = require("ramda");

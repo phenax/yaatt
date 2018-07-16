@@ -72,6 +72,21 @@ describe('Test running', () => {
 				);
 		});
 
+		it('should call log with error if the request fails', done => {
+
+			const errMsg = 'The failed request';
+			request.mock = () => Promise.reject(new Error(errMsg));
+
+			runTestCase({})
+				.fork(
+					e => {
+						expect(e.message).toBe(errMsg);
+						done();
+					},
+					() => done('Wasnt supposed to be a success here')
+				);
+		});
+
 		it('should allow test as a function', done => {
 
 			const url = '/aasdasas';

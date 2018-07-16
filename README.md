@@ -1,14 +1,14 @@
 
+![Underconstruction](https://img.shields.io/badge/under-construction-green.svg?longCache=true&style=for-the-badge)
+
+
 # Yet another api testing toolkit
 Easy tests and documentation for your http api
 
-![CircleCI](https://img.shields.io/circleci/project/github/phenax/yaatt.svg?style=flat-square)
-![npm](https://img.shields.io/npm/v/@yaatt/core.svg?style=flat-square)
-![MIT](https://img.shields.io/github/license/phenax/yaatt.svg?style=flat-square)
-
-
-
-[In development]
+[![npm](https://img.shields.io/npm/v/@yaatt/core.svg?style=flat-square)](https://www.npmjs.com/org/yaatt)
+[![CircleCI](https://img.shields.io/circleci/project/github/phenax/yaatt.svg?style=flat-square)](https://circleci.com/gh/phenax/yaatt)
+[![Codecov](https://img.shields.io/codecov/c/github/phenax/yaatt.svg?style=flat-square)](https://codecov.io/gh/phenax/yaatt)
+[![MIT](https://img.shields.io/github/license/phenax/yaatt.svg?style=flat-square)](https://github.com/phenax/yaatt/blob/master/LICENSE)
 
 ## Install
 

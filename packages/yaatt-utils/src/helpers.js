@@ -62,11 +62,8 @@ type FetchFunction = RequestOptions => Future;
 export const request: FetchFunction = Future.encaseP(options =>
 	request.mock? request.mock(options): axios(options));
 
-export const tryF = (fn: (any) => any) => (...args: Array<any>) =>
+export const tryF = (fn: Function) => (...args: Array<any>) =>
 	Future.try(() => fn(...args));
-
-
-export const constant = always;
 
 export const mapToList = (objectMap: Object): Array<Pair> =>
 	Object.keys(objectMap || {}).map(key => ({ key, value: objectMap[key] }));

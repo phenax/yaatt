@@ -107,4 +107,19 @@ describe('Response', () => {
 			expect(() => response.matchSchema(schema)).toThrowError();
 		});
 	});
+
+	describe('#assert', () => {
+
+		it('should not throw error if the schema match', () => {
+			const response = Response({ data: {
+				name: 'Shrek Third',
+				uid: '8723tbwyufwsd',
+				email: 'shrek.third@wow.com',
+			} });
+
+			response.assert(res => {
+				expect(res).toEqual(response);
+			});
+		});
+	});
 });

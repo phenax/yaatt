@@ -33,7 +33,7 @@ var defaultProps = {
     method: 'get',
     params: {},
     data: {},
-    _: (0, _utils.constant)({}) // Partial request
+    _: (0, _ramda.always)({}) // Partial request
 
   },
   dependencies: {},
