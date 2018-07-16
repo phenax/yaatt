@@ -7,7 +7,7 @@
     "build": "lerna run build --parallel --stream",
     "build:watch": "lerna run build --parallel --stream -- --watch",
     "test": "lerna run test --parallel --stream",
-    "test:ci": "lerna run test:ci --parallel --stream"
+    "test:ci": "lerna run test:ci --parallel --stream && codecov"
   },
   "workspaces": [
     "packages/*"
@@ -30,8 +30,15 @@
     "testEnvironment": "node",
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
+    "collectCoverageFrom": [
+      "packages/**/*.{js}",
+      "!**/node_modules/**"
+    ],
+    "roots": [
+      "packages/"
+    ],
     "transform": {
-      "^.+\\.jsx?$": "babel-jest"
+      "^.+\\.js$": "babel-jest"
     }
   }
 }

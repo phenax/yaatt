@@ -9,7 +9,7 @@
   "scripts": {
     "build": "babel src -d dist --copy-files",
     "test": "jest ./test",
-    "test:ci": "npm run test -- --coverage && codecov"
+    "test:ci": "npm run test -- --coverage"
   },
   "dependencies": {
     "@yaatt/utils": "^0.0.1-test.6",
