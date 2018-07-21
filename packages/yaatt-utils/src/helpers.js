@@ -1,7 +1,7 @@
 // @flow
 
 import { parse } from 'querystring';
-import { curry, always } from 'ramda';
+import { curry } from 'ramda';
 import axios from 'axios';
 import Future from 'fluture';
 import crypto from 'crypto';
