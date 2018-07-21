@@ -44,7 +44,7 @@ export const getConfigModifiers = ({ testSuites, outputDir }: BuildOptions): Con
 });
 
 export const buildApiDocs: (BuildOptions => Future) = compose(
-	compose(run, Webpack),
+	compose(run(), Webpack),
 	getWebpackConfig,
 	getConfigModifiers,
 );

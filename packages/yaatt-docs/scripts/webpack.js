@@ -1,18 +1,14 @@
 
+const { always } = require('ramda');
 const webpack = require('webpack');
 const Future = require('fluture');
 
-const future = (fn) => Future((rej, res) => {
-	fn(rej, res);
-	return () => null;
-});
-
-const defaultWatchOptions = {
+const watchOptions = {
 	// aggregateTimeout: 300,
 	// poll: undefined
 };
 
-const wpCallback = (rej, res) => (err, stats) =>
+const wCallback = (rej, res) => (err, stats) =>
 	err || stats.hasErrors()
 		? rej(err || stats.compilation.errors)
 		: res(stats);
@@ -22,17 +18,20 @@ const Webpack = config => {
 	const wCompiler = webpack(config);
 
 	return {
-		run: () =>
-			future((rej, res) =>
-				wCompiler.run(wpCallback(rej, res))),
-		watch: (watchOptions = defaultWatchOptions) =>
-			future((rej, res) =>
-				wCompiler.watch(watchOptions, wpCallback(rej, res))),
+		run: () => Future((rej, res) => {
+			wCompiler.run(wCallback(rej, res));
+			return always(null);
+		}),
+		watch: (options = {}) => Future((rej, res) => {
+			const wpOptns = Object.assign({}, watchOptions, options);
+			const watcher = wCompiler.watch(wpOptns, wCallback(rej, res));
+			return () =>  watcher.close();
+		}),
 	};
 };
 
 module.exports = {
-	run: c => c.run(),
-	watch: c => c.watch(),
+	run: config => c => c.run(config),
+	watch: config => c => c.watch(config),
 	Webpack,
 };
