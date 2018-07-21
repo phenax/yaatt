@@ -7,8 +7,8 @@ const dummyProxy = config => () => Future((rej, res) => {
 });
 
 module.exports = {
-	run: c => c.run(),
-	watch: c => c.watch(),
+	run: config => c => c.run(config),
+	watch: config => c => c.watch(config),
 	Webpack:  config => ({
 		run: dummyProxy(config),
 		watch: dummyProxy(config),
