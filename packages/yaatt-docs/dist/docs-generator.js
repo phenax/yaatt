@@ -60,7 +60,7 @@ var getConfigModifiers = function getConfigModifiers(_ref) {
 };
 
 exports.getConfigModifiers = getConfigModifiers;
-var buildApiDocs = (0, _ramda.compose)((0, _ramda.compose)(_webpack.run, _webpack.Webpack), _webpackConfig.default, getConfigModifiers);
+var buildApiDocs = (0, _ramda.compose)((0, _ramda.compose)((0, _webpack.run)(), _webpack.Webpack), _webpackConfig.default, getConfigModifiers);
 exports.buildApiDocs = buildApiDocs;
 var build = (0, _ramda.compose)(buildApiDocs, (0, _ramda.evolve)({
   testSuites: (0, _ramda.map)(toDocsFormat)

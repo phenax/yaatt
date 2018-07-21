@@ -26,7 +26,7 @@ export const konsole = {
 export const logTestSuite = (testSuite: TestSuite) => {
 	const { request: { url, method }, label } = testSuite;
 
-	konsole.log();
+	logNewLine();
 	konsole.log(chalk.bold(label));
 	konsole.log(
 		chalk.blue.bold(toUpper(method)),
@@ -51,24 +51,24 @@ export const logTestCase = (testCase: TestCase, passed: bool = false) => {
 export const logError = (e: Error) => {
 	const { message, stack } = e;
 
-	konsole.log();
+	logNewLine();
 	konsole.log(chalk.bgRed.bold('== Test failed with the following error(s) =='));
-	konsole.log();
+	logNewLine();
 	konsole.log(chalk.red.bold(message));
 	konsole.log(chalk.red(stack));
 
 	return e;
 };
 
-const colorChalk = {
+const getColoredChalk = (color) => ({
 	red: chalk.red,
 	blue: chalk.blue,
 	green: chalk.green,
-};
+})[color] || chalk.blue;
 
 export const logInfo = (msg: string, color: string) => (data: any) => {
-	let _chalk = colorChalk[color] || colorChalk['blue'];
-	konsole.log(_chalk.bold(msg));
+	let colored = getColoredChalk(color);
+	konsole.log(colored.bold(msg));
 	return data;
 };
 
