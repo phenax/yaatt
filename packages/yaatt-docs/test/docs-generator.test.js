@@ -2,7 +2,7 @@
 import { toDocsFormat, build } from '../src/docs-generator';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-jest.mock('../src/webpack.js');
+jest.mock('../scripts/webpack.js');
 
 const dummyTestSuites = [
 	{

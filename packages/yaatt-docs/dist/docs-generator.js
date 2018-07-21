@@ -3,10 +3,10 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-Object.defineProperty(exports, "webpack", {
+Object.defineProperty(exports, "Webpack", {
   enumerable: true,
   get: function get() {
-    return _webpack.default;
+    return _webpack.Webpack;
   }
 });
 exports.build = exports.buildApiDocs = exports.getConfigModifiers = exports.toDocsFormat = void 0;
@@ -19,7 +19,7 @@ var _utils = require("@yaatt/utils");
 
 var _webpackConfig = _interopRequireDefault(require("./webpack-config"));
 
-var _webpack = _interopRequireDefault(require("./webpack"));
+var _webpack = require("../scripts/webpack");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60,7 +60,7 @@ var getConfigModifiers = function getConfigModifiers(_ref) {
 };
 
 exports.getConfigModifiers = getConfigModifiers;
-var buildApiDocs = (0, _ramda.compose)(_webpack.default, _webpackConfig.default, getConfigModifiers);
+var buildApiDocs = (0, _ramda.compose)((0, _ramda.compose)(_webpack.run, _webpack.Webpack), _webpackConfig.default, getConfigModifiers);
 exports.buildApiDocs = buildApiDocs;
 var build = (0, _ramda.compose)(buildApiDocs, (0, _ramda.evolve)({
   testSuites: (0, _ramda.map)(toDocsFormat)

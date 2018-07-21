@@ -8,7 +8,7 @@ import type Future from 'fluture';
 import type { ApiDocumentation, TestSuite } from '@yaatt/core/src/types';
 
 import getWebpackConfig from './webpack-config';
-import webpack from './webpack';
+import { Webpack, run } from '../scripts/webpack';
 
 type ConfigModifiers = Object;
 type BuildOptions = {
@@ -44,7 +44,7 @@ export const getConfigModifiers = ({ testSuites, outputDir }: BuildOptions): Con
 });
 
 export const buildApiDocs: (BuildOptions => Future) = compose(
-	webpack,
+	compose(run, Webpack),
 	getWebpackConfig,
 	getConfigModifiers,
 );
@@ -56,4 +56,4 @@ export const build: (BuildOptions => Future) = compose(
 	}),
 );
 
-export { webpack };
+export { Webpack };
