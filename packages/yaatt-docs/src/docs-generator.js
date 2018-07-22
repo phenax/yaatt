@@ -1,21 +1,24 @@
 // @flow
 
+import fs from 'fs';
+import Future from 'fluture';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { compose, map, evolve } from 'ramda';
-import path from 'path';
 import { toTestCases, toUrlSafeString, generateRandomHex } from '@yaatt/utils';
 
-import type Future from 'fluture';
 import type { ApiDocumentation, TestSuite } from '@yaatt/core/src/types';
 
-import getWebpackConfig from './webpack-config';
-import { Webpack, run } from '../scripts/webpack';
+import renderDocumentation from './templates';
+import injectIntoHtml from './templates/html';
 
-type ConfigModifiers = Object;
+type FilePath = string;
+type DocsComponentProps = {
+	docs: ApiDocumentation,
+};
 type BuildOptions = {
 	testSuites: Array<ApiDocumentation>|Array<TestSuite>,
 	outputDir: string,
 };
-
 
 export const toDocsFormat = (testSuite: TestSuite): ApiDocumentation => {
 	const { url, method, ...request } = testSuite.request;
@@ -33,27 +36,20 @@ export const toDocsFormat = (testSuite: TestSuite): ApiDocumentation => {
 	};
 };
 
-export const getConfigModifiers = ({ testSuites, outputDir }: BuildOptions): ConfigModifiers => ({
-	outputPath: path.resolve(outputDir),
-	templateParameters: {
-		globalData: `
-			window.__DATA = {};
-			window.__DATA.apiDocs = ${JSON.stringify(testSuites)};
-		`,
-	},
-});
+export const saveToFile = (filename: FilePath) => (contents: string): Future =>
+	Future.node(done => fs.writeFile(filename, contents, done));
 
-export const buildApiDocs: (BuildOptions => Future) = compose(
-	compose(run(), Webpack),
-	getWebpackConfig,
-	getConfigModifiers,
+export const renderPage: (FilePath => DocsComponentProps => Future) = outputDir => compose(
+	saveToFile(outputDir),
+	injectIntoHtml,
+	children => ({ children }),
+	renderToStaticMarkup,
+	renderDocumentation,
 );
 
 export const build: (BuildOptions => Future) = compose(
-	buildApiDocs,
+	({ outputDir, testSuites }) => renderPage(outputDir)(testSuites),
 	evolve({
 		testSuites: map(toDocsFormat)
 	}),
 );
-
-export { Webpack };

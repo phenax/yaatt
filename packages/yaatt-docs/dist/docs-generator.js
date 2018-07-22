@@ -3,23 +3,21 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-Object.defineProperty(exports, "Webpack", {
-  enumerable: true,
-  get: function get() {
-    return _webpack.Webpack;
-  }
-});
-exports.build = exports.buildApiDocs = exports.getConfigModifiers = exports.toDocsFormat = void 0;
+exports.build = exports.renderPage = exports.saveToFile = exports.toDocsFormat = void 0;
+
+var _fs = _interopRequireDefault(require("fs"));
+
+var _fluture = _interopRequireDefault(require("fluture"));
+
+var _server = require("react-dom/server");
 
 var _ramda = require("ramda");
 
-var _path = _interopRequireDefault(require("path"));
-
 var _utils = require("@yaatt/utils");
 
-var _webpackConfig = _interopRequireDefault(require("./webpack-config"));
+var _templates = _interopRequireDefault(require("./templates"));
 
-var _webpack = require("../scripts/webpack");
+var _html = _interopRequireDefault(require("./templates/html"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48,21 +46,30 @@ var toDocsFormat = function toDocsFormat(testSuite) {
 
 exports.toDocsFormat = toDocsFormat;
 
-var getConfigModifiers = function getConfigModifiers(_ref) {
-  var testSuites = _ref.testSuites,
-      outputDir = _ref.outputDir;
-  return {
-    outputPath: _path.default.resolve(outputDir),
-    templateParameters: {
-      globalData: "\n\t\t\twindow.__DATA = {};\n\t\t\twindow.__DATA.apiDocs = ".concat(JSON.stringify(testSuites), ";\n\t\t")
-    }
+var saveToFile = function saveToFile(filename) {
+  return function (contents) {
+    return _fluture.default.node(function (done) {
+      return _fs.default.writeFile(filename, contents, done);
+    });
   };
 };
 
-exports.getConfigModifiers = getConfigModifiers;
-var buildApiDocs = (0, _ramda.compose)((0, _ramda.compose)((0, _webpack.run)(), _webpack.Webpack), _webpackConfig.default, getConfigModifiers);
-exports.buildApiDocs = buildApiDocs;
-var build = (0, _ramda.compose)(buildApiDocs, (0, _ramda.evolve)({
+exports.saveToFile = saveToFile;
+
+var renderPage = function renderPage(outputDir) {
+  return (0, _ramda.compose)(saveToFile(outputDir), _html.default, function (children) {
+    return {
+      children: children
+    };
+  }, _server.renderToStaticMarkup, _templates.default);
+};
+
+exports.renderPage = renderPage;
+var build = (0, _ramda.compose)(function (_ref) {
+  var outputDir = _ref.outputDir,
+      testSuites = _ref.testSuites;
+  return renderPage(outputDir)(testSuites);
+}, (0, _ramda.evolve)({
   testSuites: (0, _ramda.map)(toDocsFormat)
 }));
 exports.build = build;
