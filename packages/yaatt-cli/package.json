@@ -12,6 +12,7 @@
   "dependencies": {
     "@yaatt/core": "^0.0.1-test.6",
     "@yaatt/utils": "^0.0.1-test.6",
+    "@yaatt/docs": "^0.0.1-test.6",
     "chalk": "^2.4.1",
     "fluture": "^8.0.2",
     "ramda": "^0.25.0",

@@ -48,3 +48,12 @@ export type Pair = {
 
 export type MapFutureFunction =
 	((any, number, any) => Future) => Array<any> => Future;
+
+export type ApiDocumentation = {
+	name: string,
+	description: string,
+	url: UrlString,
+	method: string,
+	request: RequestOptions,
+	tests: Array<TestCase>,
+};

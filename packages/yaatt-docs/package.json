@@ -1,0 +1,35 @@
+{
+  "name": "@yaatt/docs",
+  "version": "0.0.1-test.6",
+  "description": "Helpers to generate documentation from your api test suite",
+  "main": "dist/index.js",
+  "repository": "https://github.com/phenax/yaatt",
+  "author": "Akshay Nair<phenax5@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src -d dist --copy-files",
+    "test": "jest ./test"
+  },
+  "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.53",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.53",
+    "@babel/preset-react": "^7.0.0-beta.53",
+    "@yaatt/core": "^0.0.1-test.5",
+    "@yaatt/utils": "^0.0.1-test.5",
+    "fluture": "^8.0.2",
+    "ramda": "^0.25.0",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react",
+      "@babel/preset-flow"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-object-rest-spread",
+      "@babel/plugin-proposal-class-properties"
+    ]
+  }
+}

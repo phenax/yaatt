@@ -4,8 +4,9 @@ import { parse } from 'querystring';
 import { curry } from 'ramda';
 import axios from 'axios';
 import Future from 'fluture';
+import crypto from 'crypto';
 
-import type { QueryParams, TestError, TestSuite, TestCase, RequestOptions, MapFutureFunction, Pair } from '@yaatt/core/dist/types';
+import type { QueryParams, TestError, TestSuite, TestCase, RequestOptions, MapFutureFunction, Pair } from '@yaatt/core/src/types';
 
 type ThrowErrorOptions = { future: bool, promise: bool };
 export const throwError = (e: TestError = 'Unknown Error', options?: ThrowErrorOptions) => {
@@ -69,3 +70,11 @@ export const mapToList = (objectMap: Object): Array<Pair> =>
 
 export const listToMap = (list: Array<Pair>) =>
 	(list || []).reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {});
+
+export const generateRandomHex = (size?: number = 10): string =>
+	crypto.randomBytes(size / 2).toString('hex');
+
+export const toUrlSafeString = (str: string): string =>
+	(str || '')
+		.replace(/^https?:\/\//gi, '')
+		.replace(/[^A-Za-z0-9]+/gi, '-');

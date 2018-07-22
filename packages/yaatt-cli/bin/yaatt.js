@@ -1,16 +1,20 @@
 #!/usr/bin/env node
 
-const { map, compose, prop } = require('ramda');
-const { runTestSuite } = require('@yaatt/core');
-const { mapFutureSync, logError, logNewLine } = require('@yaatt/utils');
+const { compose, cond, T, propSatisfies } = require('ramda');
+const { logError, logNewLine } = require('@yaatt/utils');
 
-const { importTestCase, resolvePaths, validateArgs, getConfig } = require('../src');
+const { validateArgs, getConfig } = require('../src/cli-utils');
+const { executeTestSuites } = require('../src/tester');
+const { generateDocumentation } = require('../src/docs');
+
+
+const isDocs = propSatisfies(x => !!x, 'documentation');
 
 const init = compose(
-	mapFutureSync(runTestSuite),
-	map(importTestCase),
-	resolvePaths,
-	prop('testSuites'),
+	cond([
+		[ isDocs,  generateDocumentation ],
+		[ T,       executeTestSuites ],
+	]),
 	validateArgs,
 	getConfig,
 );

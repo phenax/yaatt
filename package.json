@@ -7,7 +7,8 @@
     "build": "lerna run build --parallel --stream",
     "build:watch": "lerna run build --parallel --stream -- --watch",
     "test": "lerna run test --parallel --stream",
-    "test:ci": "lerna run test:ci --parallel --stream && codecov"
+    "test:ci": "lerna run test:ci --parallel --stream && codecov",
+    "lint": "eslint packages"
   },
   "workspaces": [
     "packages/*"
@@ -21,6 +22,11 @@
     "babel-eslint": "^8.2.5",
     "babel-jest": "^23.0.1",
     "eslint": "^5.0.0",
+    "eslint-config-react-app": "^2.1.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.0",
+    "eslint-plugin-react": "^7.10.0",
     "flow-bin": "^0.75.0",
     "jest": "^23.1.0",
     "codecov": "^3.0.4",

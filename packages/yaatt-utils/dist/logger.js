@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.logNewLine = exports.log = exports.logError = exports.logTestCase = exports.logTestSuite = exports.konsole = void 0;
+exports.logNewLine = exports.log = exports.logInfo = exports.logError = exports.logTestCase = exports.logTestSuite = exports.konsole = void 0;
 
 var _chalk = _interopRequireDefault(require("chalk"));
 
@@ -38,7 +38,7 @@ var logTestSuite = function logTestSuite(testSuite) {
       url = _testSuite$request.url,
       method = _testSuite$request.method,
       label = testSuite.label;
-  konsole.log();
+  logNewLine();
   konsole.log(_chalk.default.bold(label));
   konsole.log(_chalk.default.blue.bold((0, _ramda.toUpper)(method)), _chalk.default.blue(url));
   return testSuite;
@@ -65,15 +65,33 @@ exports.logTestCase = logTestCase;
 var logError = function logError(e) {
   var message = e.message,
       stack = e.stack;
-  konsole.log();
+  logNewLine();
   konsole.log(_chalk.default.bgRed.bold('== Test failed with the following error(s) =='));
-  konsole.log();
+  logNewLine();
   konsole.log(_chalk.default.red.bold(message));
   konsole.log(_chalk.default.red(stack));
   return e;
 };
 
 exports.logError = logError;
+
+var getColoredChalk = function getColoredChalk(color) {
+  return {
+    red: _chalk.default.red,
+    blue: _chalk.default.blue,
+    green: _chalk.default.green
+  }[color] || _chalk.default.blue;
+};
+
+var logInfo = function logInfo(msg, color) {
+  return function (data) {
+    var colored = getColoredChalk(color);
+    konsole.log(colored.bold(msg));
+    return data;
+  };
+};
+
+exports.logInfo = logInfo;
 
 var log = function log(label) {
   return function (data) {

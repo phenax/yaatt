@@ -2,7 +2,7 @@
 import Future from 'fluture';
 import { identity, sum } from 'ramda';
 
-import { throwError, toParams, mapToList, listToMap, tryF, toTestCases, mapFutureAsync, mapFutureSync } from '../src/helpers';
+import { throwError, toParams, mapToList, listToMap, tryF, toTestCases, mapFutureAsync, mapFutureSync, generateRandomHex, toUrlSafeString } from '../src/helpers';
 
 describe('helpers', () => {
 
@@ -264,6 +264,29 @@ describe('helpers', () => {
 						done();
 					}
 				);
+		});
+	});
+
+	describe('generateRandomHex', () => {
+
+		it('should generate a new random hash every time', () => {
+			const hash = generateRandomHex(6);
+			expect(hash).toHaveLength(6);
+		});
+
+		it('should generate a new random hash every time', () => {
+			const hash = generateRandomHex(10);
+			expect(hash).not.toBe(generateRandomHex(10));
+			expect(hash).not.toBe(generateRandomHex(10));
+			expect(hash).not.toBe(generateRandomHex(10));
+		});
+	});
+
+	describe('toUrlSafeString', () => {
+
+		it('should return url without protocol prefix', () => {
+			expect(toUrlSafeString('https://google.com/whatever')).not.toContain('http');
+			expect(toUrlSafeString('http://google.com/whatever')).not.toContain('http');
 		});
 	});
 });
